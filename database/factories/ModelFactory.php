@@ -29,3 +29,10 @@ $factory->define(App\Entities\ShortMessage::class, function (Faker\Generator $fa
         'message' => $faker->sentence
     ];
 });
+
+$factory->define(App\Entities\Contact::class, function (Faker\Generator $faker) {
+    return [
+        'mobile' => phone_format($faker->numberBetween(900,999) . $faker->numberBetween(1000000,9999999), 'PH', PhoneNumberFormat::E164),
+        'handle' => $faker->userName,
+    ];
+});

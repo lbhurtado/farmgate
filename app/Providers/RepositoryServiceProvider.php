@@ -24,6 +24,7 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(\App\Repositories\ShortMessageRepository::class, \App\Repositories\ShortMessageRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\ContactRepository::class, \App\Repositories\ContactRepositoryEloquent::class);
         //:end-bindings:
     }
 }

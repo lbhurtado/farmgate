@@ -32,7 +32,7 @@ class ShortMessageTest extends TestCase
     }
 
     /** @test */
-    function message_field_is_required()
+    function short_message_message_field_is_required()
     {
         $this->setExpectedException(Prettus\Validator\Exceptions\ValidatorException::class);
 
@@ -43,7 +43,7 @@ class ShortMessageTest extends TestCase
     }
 
     /** @test */
-    function message_field_is_not_blank()
+    function short_message_message_field_is_not_blank()
     {
         $this->setExpectedException(Prettus\Validator\Exceptions\ValidatorException::class);
 
@@ -55,7 +55,7 @@ class ShortMessageTest extends TestCase
     }
 
     /** @test */
-    function from_field_is_a_mobile_number()
+    function short_message_from_field_is_a_mobile_number()
     {
         $this->setExpectedException(Prettus\Validator\Exceptions\ValidatorException::class);
 
@@ -67,7 +67,7 @@ class ShortMessageTest extends TestCase
     }
 
     /** @test */
-    function to_field_is_a_mobile_number()
+    function short_message_to_field_is_a_mobile_number()
     {
         $this->setExpectedException(Prettus\Validator\Exceptions\ValidatorException::class);
 
