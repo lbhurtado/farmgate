@@ -32,10 +32,13 @@ class ShortMessageRepositoryEloquent extends BaseRepository implements ShortMess
     */
     public function validator()
     {
-
         return ShortMessageValidator::class;
     }
 
+    /**
+     * Specify Presenter class name
+     * @return mixed
+     */
     public function presenter()
     {
         return ShortMessagePresenter::class;

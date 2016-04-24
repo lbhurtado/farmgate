@@ -13,8 +13,8 @@ class ShortMessageTransformer extends TransformerAbstract
 {
 
     /**
-     * Transform the \ShortMessage entity
-     * @param \ShortMessage $model
+     * Transform the ShortMessage entity
+     * @param ShortMessage $model
      *
      * @return array
      */
@@ -22,12 +22,9 @@ class ShortMessageTransformer extends TransformerAbstract
     {
         return [
             'id'         => (int) $model->id,
-
             'to'         => phone_format($model->to,   'PH', PhoneNumberFormat::E164),
             'from'       => phone_format($model->from, 'PH', PhoneNumberFormat::E164),
             'message'    => $model->message,
-            /* place your other model properties here */
-
             'created_at' => $model->created_at,
             'updated_at' => $model->updated_at
         ];
