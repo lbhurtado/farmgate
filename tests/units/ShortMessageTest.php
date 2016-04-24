@@ -21,12 +21,12 @@ class ShortMessageTest extends TestCase
         ]);
 
         $this->assertInstanceOf(ShortMessage::class,  $short_message);
-        $this->assertEquals('09173011987',            $short_message->from);
-        $this->assertEquals('09189362340',            $short_message->to);
+        $this->assertEquals('+639173011987',          $short_message->from);
+        $this->assertEquals('+639189362340',          $short_message->to);
         $this->assertEquals('The quick brown fox...', $short_message->message);
         $this->seeInDatabase($short_message->getTable(), [
-            'from'    => '09173011987',
-            'to'      => '09189362340',
+            'from'    => '+639173011987',
+            'to'      => '+639189362340',
             'message' => "The quick brown fox..."
         ]);
     }

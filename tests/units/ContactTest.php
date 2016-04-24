@@ -20,10 +20,10 @@ class ContactTest extends TestCase
         ]);
 
         $this->assertInstanceOf(Contact::class, $contact);
-        $this->assertEquals('09173011987', $contact->mobile);
+        $this->assertEquals('+639173011987', $contact->mobile);
         $this->assertEquals('lbhurtado', $contact->handle);
         $this->seeInDatabase($contact->getTable(), [
-            'mobile'  => '09173011987',
+            'mobile'  => '+639173011987',
             'handle'  => 'lbhurtado',
         ]);
     }
