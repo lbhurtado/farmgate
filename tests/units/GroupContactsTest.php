@@ -30,8 +30,9 @@ class GroupContactsTest extends TestCase
         $this->group->members()->attach($contact2);
 
         $this->assertCount(2, $this->group->members);
-
         $this->assertEquals("Dene", $this->group->whereName("Group 1")->firstOrFail()->members()->find($contact2->id)->handle);
-        $this->assertEquals('Group 1', $contact1->groups()->find($this->group->id)->name);
+        $this->assertEquals("Group 1", $contact1->groups()->find($this->group->id)->name);
+        $this->seeInDatabase($this->group->members()->getTable(), ['group_id' => $this->group->id, 'contact_id' => $contact1->id]);
+        $this->seeInDatabase($this->group->members()->getTable(), ['group_id' => $this->group->id, 'contact_id' => $contact2->id]);
     }
 }
