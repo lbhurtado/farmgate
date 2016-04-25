@@ -15,7 +15,7 @@ class ShortMessage extends Model implements Transformable, Presentable
 {
     use TransformableTrait, PresentableTrait;
 
-	protected $table = 'shortmessages';
+//	protected $table = 'short_messages';
 
 	protected $attributes = [
 		'direction' => INCOMING

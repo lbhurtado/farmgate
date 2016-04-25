@@ -6,7 +6,7 @@
  * Time: 10:19
  */
 
-namespace App\Repositories;
+namespace App\Criteria;
 
 use Prettus\Repository\Contracts\RepositoryInterface;
 use Prettus\Repository\Contracts\CriteriaInterface;

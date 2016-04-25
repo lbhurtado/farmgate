@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateShortmessagesTable extends Migration
+class CreateShortMessagesTable extends Migration
 {
 
 	/**
@@ -13,7 +13,7 @@ class CreateShortmessagesTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('shortmessages', function(Blueprint $table) {
+		Schema::create('short_messages', function(Blueprint $table) {
             $table->increments('id');
 			$table->string('from');
 			$table->string('to');
@@ -30,7 +30,7 @@ class CreateShortmessagesTable extends Migration
 	 */
 	public function down()
 	{
-		Schema::drop('shortmessages');
+		Schema::drop('short_messages');
 	}
 
 }

@@ -7,7 +7,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use App\Jobs\RecordShortMessage;
 use App\Repositories\ShortMessageRepository;
 use App\Entities\ShortMessage;
-use App\Repositories\SmartMobileCriteria;
+use App\Criteria\SmartMobileCriteria;
 
 class RecordShortMessageTest extends TestCase
 {
