@@ -16,9 +16,12 @@ class RecordShortMessageTest extends TestCase
     function record_short_message_does_the_job()
     {
         $job = new RecordShortMessage('09173011987', '09189362340', "The quick brown fox...");
-
         $this->dispatch($job);
-        $short_message = $this->app->make(ShortMessageRepository::class)->skipPresenter()->find(1);
+        $short_message = $this->app->make(ShortMessageRepository::class)->skipPresenter()->findWhere([
+            'from'    => '+639173011987',
+            'to'      => '+639189362340',
+            'message' => 'The quick brown fox...'
+        ])->first();
 
         $this->assertInstanceOf(ShortMessage::class,  $short_message);
         $this->assertEquals('+639173011987',          $short_message->from);
