@@ -25,6 +25,12 @@ class ModelServiceProvider extends ServiceProvider
 
         Contact::creating(function ($model) {
             $model->mobile = phone_format($model->mobile, 'PH', PhoneNumberFormat::E164);
+            $model->handle = $model->handle ?: $model->mobile;
+        });
+
+        Contact::updating(function ($model) {
+            $model->mobile = phone_format($model->mobile, 'PH', PhoneNumberFormat::E164);
+            $model->handle = $model->handle ?: $model->mobile;
         });
     }
 

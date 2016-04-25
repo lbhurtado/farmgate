@@ -17,4 +17,8 @@ class Contact extends Model implements Transformable, Presentable
 		'handle',
 	];
 
+	protected $fieldSearchable = [
+		'mobile',
+		'handle'
+	];
 }

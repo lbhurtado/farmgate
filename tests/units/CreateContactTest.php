@@ -27,4 +27,22 @@ class CreateContactTest extends TestCase
             'handle' => 'lbhurtado',
         ]);
     }
+
+    /** @test */
+    function create_contact_duplication_will_update()
+    {
+        $this->dispatch(new CreateContact('09173011987', 'lbhurtado'));
+        $this->dispatch(new CreateContact('09173011987', 'lester'));
+
+        $contacts = $this->app->make(ContactRepository::class)->skipPresenter();
+
+        $this->assertCount(1, $contacts->all());
+        $this->assertEquals('+639173011987', $contacts->first()->mobile);
+        $this->assertEquals('lester', $contacts->first()->handle);
+
+        $this->seeInDatabase($contacts->first()->getTable(), [
+            'mobile' => '+639173011987',
+            'handle' => 'lester',
+        ]);
+    }
 }
