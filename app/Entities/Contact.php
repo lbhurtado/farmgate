@@ -21,4 +21,8 @@ class Contact extends Model implements Transformable, Presentable
 		'mobile',
 		'handle'
 	];
+
+	public function groups() {
+		return $this->belongsToMany(Group::class);
+	}
 }

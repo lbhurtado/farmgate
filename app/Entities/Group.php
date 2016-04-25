@@ -19,4 +19,8 @@ class Group extends Model implements Transformable, Presentable
     protected $fieldSearchable = [
         'name',
     ];
+
+    function members() {
+        return $this->belongsToMany(Contact::class);
+    }
 }
