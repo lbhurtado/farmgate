@@ -67,4 +67,18 @@ class GroupTest extends TestCase
             $contact['data']['name']
         );
     }
+
+    /** @test */
+    function group_has_unique_name_field()
+    {
+        $this->setExpectedException(Illuminate\Database\QueryException::class);
+
+        App::make(GroupRepository::class)->create([
+            'name' => 'Group 1'
+        ]);
+
+        App::make(GroupRepository::class)->create([
+            'name' => 'Group 1'
+        ]);
+    }
 }
