@@ -18,17 +18,20 @@ class RecordShortMessage extends Job implements ShouldQueue
 
     private $message;
 
+    private $direction;
     /**
      * RecordShortMessage constructor.
      * @param $from
      * @param $to
      * @param $message
+     * @param $direction
      */
-    public function __construct($from, $to, $message)
+    public function __construct($from, $to, $message, $direction)
     {
         $this->from = $from;
         $this->to = $to;
         $this->message = $message;
+        $this->direction = $direction;
     }
 
 
@@ -40,7 +43,8 @@ class RecordShortMessage extends Job implements ShouldQueue
         $from = $this->from;
         $to = $this->to;
         $message = $this->message;
+        $direction = $this->direction;
 
-        $shortMessageRepository->create(compact('from', 'to', 'message'));
+        $shortMessageRepository->create(compact('from', 'to', 'message', 'direction'));
     }
 }

@@ -12,11 +12,13 @@ class ShortMessageValidator extends LaravelValidator {
             'from'      => 'phone:PH',
             'to'        => 'phone:PH',
             'message'   => 'required',
+            'direction' => 'in:-1,1',
         ],
         ValidatorInterface::RULE_UPDATE => [
             'from'      => 'phone:PH',
             'to'        => 'phone:PH',
             'message'   => 'required',
+            'direction' => 'in:-1,1',
         ],
    ];
 

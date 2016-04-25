@@ -8,16 +8,24 @@ use Prettus\Repository\Traits\TransformableTrait;
 use Prettus\Repository\Contracts\Presentable;
 use Prettus\Repository\Traits\PresentableTrait;
 
+define('INCOMING', -1);
+define('OUTGOING',  1);
+
 class ShortMessage extends Model implements Transformable, Presentable
 {
     use TransformableTrait, PresentableTrait;
 
 	protected $table = 'shortmessages';
 
+	protected $attributes = [
+		'direction' => INCOMING
+	];
+
     protected $fillable = [
 		'from',
 		'to',
 		'message',
+		'direction'
 	];
 
 }

@@ -18,7 +18,7 @@ class CreateShortmessagesTable extends Migration
 			$table->string('from');
 			$table->string('to');
 			$table->text('message');
-
+			$table->tinyInteger('direction');
             $table->timestamps();
 		});
 	}
