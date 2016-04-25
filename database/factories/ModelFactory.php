@@ -36,3 +36,9 @@ $factory->define(App\Entities\Contact::class, function (Faker\Generator $faker) 
         'handle' => $faker->userName,
     ];
 });
+
+$factory->define(App\Entities\Group::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->company,
+    ];
+});
