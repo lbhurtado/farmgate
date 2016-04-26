@@ -11,7 +11,7 @@
 |
 */
 
-use libphonenumber\PhoneNumberFormat;
+use App\Mobile;
 
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
@@ -24,15 +24,15 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Entities\ShortMessage::class, function (Faker\Generator $faker) {
     return [
-        'from'    => phone_format($faker->numberBetween(900,999) . $faker->numberBetween(1000000,9999999), 'PH', PhoneNumberFormat::E164),
-        'to'      => phone_format($faker->numberBetween(900,999) . $faker->numberBetween(1000000,9999999), 'PH', PhoneNumberFormat::E164),
+        'from'    => Mobile::number($faker->numberBetween(917,919) . $faker->numberBetween(8362340,9362340)),
+        'to'      => Mobile::number($faker->numberBetween(916,918) . $faker->numberBetween(2011987,3011987)),
         'message' => $faker->sentence
     ];
 });
 
 $factory->define(App\Entities\Contact::class, function (Faker\Generator $faker) {
     return [
-        'mobile' => phone_format($faker->numberBetween(900,999) . $faker->numberBetween(1000000,9999999), 'PH', PhoneNumberFormat::E164),
+        'mobile' => Mobile::number($faker->numberBetween(900,999) . $faker->numberBetween(1000000,9999999)),
         'handle' => $faker->userName,
     ];
 });

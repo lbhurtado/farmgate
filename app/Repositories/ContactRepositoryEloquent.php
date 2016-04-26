@@ -8,9 +8,7 @@ use App\Repositories\ContactRepository;
 use App\Entities\Contact;
 use App\Validators\ContactValidator;
 use App\Presenters\ContactPresenter;
-use libphonenumber\PhoneNumberFormat;
-use Prettus\Validator\Contracts\ValidatorInterface;
-use Prettus\Repository\Events\RepositoryEntityUpdated;
+use App\Mobile;
 
 /**
  * Class ContactRepositoryEloquent
@@ -59,7 +57,7 @@ class ContactRepositoryEloquent extends BaseRepository implements ContactReposit
     {
         if ($field == 'mobile')
         {
-            $value = phone_format($value, 'PH', PhoneNumberFormat::E164);
+            $value = Mobile::number($value);
         }
 
         return parent::findByField($field, $value, $columns);
@@ -67,22 +65,8 @@ class ContactRepositoryEloquent extends BaseRepository implements ContactReposit
 
     public function updateOrCreate(array $attributes, array $values = [])
     {
-        $this->applyScope();
-        if (!is_null($this->validator)) {
-            $this->validator->with($attributes)->passesOrFail(ValidatorInterface::RULE_UPDATE);
-        }
-        $temporarySkipPresenter = $this->skipPresenter;
-        $this->skipPresenter(true);
+        $attributes['mobile'] = Mobile::number($attributes['mobile']);
 
-        $mobile = $attributes['mobile'];
-        $handle = $attributes['handle'];
-        $contact = $this->findByField('mobile', $mobile)->first();
-        $model = $contact ? $this->update(compact('mobile', 'handle'), $contact->id) : $this->create(compact('mobile', 'handle'));
-
-        $this->skipPresenter($temporarySkipPresenter);
-        $this->resetModel();
-        event(new RepositoryEntityUpdated($this, $model));
-
-        return $this->parserResult($model);
+        return parent::updateOrCreate($attributes, $values);
     }
 }

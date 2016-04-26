@@ -18,7 +18,7 @@ class ShortMessage extends Model implements Transformable, Presentable
 //	protected $table = 'short_messages';
 
 	protected $attributes = [
-		'direction' => INCOMING
+		'direction' => INCOMING,
 	];
 
     protected $fillable = [
@@ -28,12 +28,24 @@ class ShortMessage extends Model implements Transformable, Presentable
 		'direction'
 	];
 
+	protected $appends = ['mobile', 'handle'];
+
 	public function getMobile()
 	{
 		return ($this->direction == INCOMING ? $this->from : $this->to);
 	}
 
 	public function getHandle()
+	{
+		return $this->getMobile();
+	}
+
+	public function getMobileAttribute()
+	{
+		return ($this->direction == INCOMING ? $this->from : $this->to);
+	}
+
+	public function getHandleAttribute()
 	{
 		return $this->getMobile();
 	}

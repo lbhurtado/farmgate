@@ -7,8 +7,9 @@ use App\Repositories\ShortMessageRepository;
 use App\Entities\ShortMessage;
 use libphonenumber\PhoneNumberFormat;
 use App\Criteria\IncomingShortMessageCriterion;
-//use App\Events\ShortMessageWasRecorded;
-use App\Repositories\ContactRepository;
+use App\Events\ShortMessageWasRecorded;
+use App\Jobs\CreateContactFromShortMessage;
+use App\Mobile;
 
 class ShortMessageTest extends TestCase
 {
@@ -93,8 +94,8 @@ class ShortMessageTest extends TestCase
         $validator = Validator::make(
             $sms->all()->toArray(),
             [
-                'from' => 'phone:PH',
-                'to'   => 'phone:PH',
+                'from' => array('phone:PH'),
+                'to'   => array('phone:PH'),
             ]
         );
 
@@ -112,8 +113,8 @@ class ShortMessageTest extends TestCase
         ]);
 
         $this->assertEquals(
-            phone_format('09173011987',        'PH', PhoneNumberFormat::E164),
-            phone_format($sms['data']['from'], 'PH', PhoneNumberFormat::E164)
+            Mobile::number('09173011987'),
+            Mobile::number($sms['data']['from'])
         );
     }
 
@@ -142,20 +143,26 @@ class ShortMessageTest extends TestCase
     /** @test */
     function short_message_creation_fires_event()
     {
+        $this->expectsEvents(ShortMessageWasRecorded::class);
+
         App::make(ShortMessageRepository::class)->skipPresenter()->create([
             'from'      => '09173011987',
             'to'        => '09189362340',
             'message'   => "The quick brown fox...",
             'direction' => INCOMING
         ]);
+    }
 
-        $contact = $this->app->make(ContactRepository::class)->skipPresenter()->findByField('mobile', '+639173011987')->first();
+    /** @test */
+    function short_message_creation_fires_event_then_dispatches_job()
+    {
+        $this->expectsJobs(CreateContactFromShortMessage::class);
 
-        $this->assertEquals('+639173011987', $contact->mobile);
-        $this->assertEquals('+639173011987', $contact->handle);
-        $this->seeInDatabase($contact->getTable(), [
-            'mobile' => '+639173011987',
-            'handle' => '+639173011987',
+        App::make(ShortMessageRepository::class)->skipPresenter()->create([
+            'from'      => '09173011987',
+            'to'        => '09189362340',
+            'message'   => "The quick brown fox...",
+            'direction' => INCOMING
         ]);
     }
 }

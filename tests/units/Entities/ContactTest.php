@@ -133,4 +133,13 @@ class ContactTest extends TestCase
             'handle' => 'lbhurtado',
         ]);
     }
+
+    /** @test */
+    function contact_mobile_attribute_is_formatted()
+    {
+        $contact = new Contact();
+        $contact->mobile = '09173011987';
+
+        $this->assertEquals('+639173011987', $contact->mobile);
+    }
 }

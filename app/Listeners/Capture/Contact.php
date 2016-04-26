@@ -5,8 +5,8 @@ namespace App\Listeners\Capture;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Events\ShortMessageWasRecorded;
-use App\Jobs\CreateContact;
 use Illuminate\Foundation\Bus\DispatchesJobs;
+use App\Jobs\CreateContactFromShortMessage;
 
 class Contact
 {
@@ -20,10 +20,8 @@ class Contact
      */
     public function handle(ShortMessageWasRecorded $event)
     {
-        $mobile = $event->shortMessage->getMobile();
-        $handle = $event->shortMessage->getHandle();
+        $job = new CreateContactFromShortMessage($event->shortMessage);
 
-        $job = new CreateContact($mobile, $handle);
         $this->dispatch($job);
     }
 }

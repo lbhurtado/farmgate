@@ -7,7 +7,6 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Repositories\ContactRepository;
-use libphonenumber\PhoneNumberFormat;
 
 class CreateContact extends Job implements ShouldQueue
 {
@@ -36,6 +35,6 @@ class CreateContact extends Job implements ShouldQueue
         $mobile = $this->mobile;
         $handle = $this->handle;
 
-        $contactRepository->updateOrCreate(compact('mobile', 'handle'));
+        $contactRepository->updateOrCreate(compact('mobile'), compact('mobile', 'handle'));
     }
 }
