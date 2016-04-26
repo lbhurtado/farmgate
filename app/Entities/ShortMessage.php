@@ -28,4 +28,13 @@ class ShortMessage extends Model implements Transformable, Presentable
 		'direction'
 	];
 
+	public function getMobile()
+	{
+		return ($this->direction == INCOMING ? $this->from : $this->to);
+	}
+
+	public function getHandle()
+	{
+		return $this->getMobile();
+	}
 }

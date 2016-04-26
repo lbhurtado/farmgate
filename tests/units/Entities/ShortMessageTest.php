@@ -7,6 +7,8 @@ use App\Repositories\ShortMessageRepository;
 use App\Entities\ShortMessage;
 use libphonenumber\PhoneNumberFormat;
 use App\Criteria\IncomingShortMessageCriterion;
+//use App\Events\ShortMessageWasRecorded;
+use App\Repositories\ContactRepository;
 
 class ShortMessageTest extends TestCase
 {
@@ -135,5 +137,25 @@ class ShortMessageTest extends TestCase
         $short_messages = App::make(ShortMessageRepository::class)->skipPresenter()->getByCriteria(new IncomingShortMessageCriterion());
 
         $this->assertEquals('Incoming message', $short_messages->first()->message);
+    }
+
+    /** @test */
+    function short_message_creation_fires_event()
+    {
+        App::make(ShortMessageRepository::class)->skipPresenter()->create([
+            'from'      => '09173011987',
+            'to'        => '09189362340',
+            'message'   => "The quick brown fox...",
+            'direction' => INCOMING
+        ]);
+
+        $contact = $this->app->make(ContactRepository::class)->skipPresenter()->findByField('mobile', '+639173011987')->first();
+
+        $this->assertEquals('+639173011987', $contact->mobile);
+        $this->assertEquals('+639173011987', $contact->handle);
+        $this->seeInDatabase($contact->getTable(), [
+            'mobile' => '+639173011987',
+            'handle' => '+639173011987',
+        ]);
     }
 }

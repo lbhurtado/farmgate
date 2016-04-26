@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Entities\ShortMessage;
 use App\Entities\Contact;
 use libphonenumber\PhoneNumberFormat;
+use App\Events\ShortMessageWasRecorded;
 
 class ModelServiceProvider extends ServiceProvider
 {
@@ -31,6 +32,10 @@ class ModelServiceProvider extends ServiceProvider
         Contact::updating(function ($model) {
             $model->mobile = phone_format($model->mobile, 'PH', PhoneNumberFormat::E164);
             $model->handle = $model->handle ?: $model->mobile;
+        });
+
+        ShortMessage::created(function ($model) {
+            event(new ShortMessageWasRecorded($model));
         });
     }
 
