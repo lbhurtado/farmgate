@@ -7,6 +7,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use App\Jobs\CreateContact;
 use App\Repositories\ContactRepository;
 use App\Entities\Contact;
+use App\Mobile;
 
 class CreateContactTest extends TestCase
 {
@@ -17,7 +18,7 @@ class CreateContactTest extends TestCase
     {
         $job = new CreateContact('09173011987', 'lbhurtado');
         $this->dispatch($job);
-        $contact = $this->app->make(ContactRepository::class)->skipPresenter()->findByField('mobile', '+639173011987')->first();
+        $contact = $this->app->make(ContactRepository::class)->skipPresenter()->findByField('mobile', Mobile::number('09173011987'))->first();
 
         $this->assertInstanceOf(Contact::class, $contact);
         $this->assertEquals('+639173011987', $contact->mobile);
