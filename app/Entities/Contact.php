@@ -33,4 +33,9 @@ class Contact extends Model implements Transformable, Presentable
 
 		return $mobile ? Mobile::number($mobile) : null;
 	}
+
+	public function short_messages()
+	{
+		return $this->hasMany(ShortMessage::class, 'from', 'mobile');
+	}
 }

@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Repositories\ContactRepository;
 use App\Entities\Contact;
 use libphonenumber\PhoneNumberFormat;
+use App\Repositories\ShortMessageRepository;
 
 class ContactTest extends TestCase
 {
@@ -141,5 +142,48 @@ class ContactTest extends TestCase
         $contact->mobile = '09173011987';
 
         $this->assertEquals('+639173011987', $contact->mobile);
+    }
+
+    /** @test */
+    function contact_has_many_short_messages()
+    {
+        $short_messages = App::make(ShortMessageRepository::class)->skipPresenter();
+
+        $short_messages->create([
+            'from'      => '09173011987',
+            'to'        => '09189362340',
+            'message'   => "The quick brown fox...",
+            'direction' => INCOMING
+        ]);
+
+        $short_messages->create([
+            'from'      => '09173011987',
+            'to'        => '09189362340',
+            'message'   => "jumps over the lazy dog...",
+            'direction' => INCOMING
+        ]);
+
+        $short_messages->skipPresenter()->create([
+            'from'      => '09189362340',
+            'to'        => '09173011987',
+            'message'   => "The quick brown fox...",
+            'direction' => INCOMING
+        ]);
+
+        $this->assertCount(3 , $short_messages->all());
+
+        $contacts = App::make(ContactRepository::class)->skipPresenter();
+
+        $contact = $contacts->findWhere(['mobile' => '+639173011987'])->first();
+
+        $this->assertCount(2, $contact->short_messages);
+
+        $this->assertEquals(
+            [
+                "The quick brown fox...",
+                "jumps over the lazy dog..."
+            ],
+            $contact->short_messages->pluck('message')->toArray()
+        );
     }
 }

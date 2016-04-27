@@ -10,13 +10,14 @@ use App\Criteria\IncomingShortMessageCriterion;
 use App\Events\ShortMessageWasRecorded;
 use App\Jobs\CreateContactFromShortMessage;
 use App\Mobile;
+use App\Entities\Contact;
 
 class ShortMessageTest extends TestCase
 {
     use DatabaseMigrations;
 
     /** @test */
-    function short_message_has_from_to_message()
+    function short_message_has_from_to_message_and_calculated_mobile_fields()
     {
         $short_message = App::make(ShortMessageRepository::class)->skipPresenter()->create([
             'from'      => '09173011987',
@@ -30,6 +31,7 @@ class ShortMessageTest extends TestCase
         $this->assertEquals('+639189362340',          $short_message->to);
         $this->assertEquals('The quick brown fox...', $short_message->message);
         $this->assertEquals(INCOMING,                 $short_message->direction);
+        $this->assertEquals('+639173011987',          $short_message->mobile);
         $this->seeInDatabase($short_message->getTable(), [
             'from'      => '+639173011987',
             'to'        => '+639189362340',
@@ -164,5 +166,20 @@ class ShortMessageTest extends TestCase
             'message'   => "The quick brown fox...",
             'direction' => INCOMING
         ]);
+    }
+
+    /** @test */
+    function short_message_has_a_contact()
+    {
+        $short_message = App::make(ShortMessageRepository::class)->skipPresenter()->create([
+            'from'      => '09173011987',
+            'to'        => '09189362340',
+            'message'   => "The quick brown fox...",
+            'direction' => INCOMING
+        ]);
+
+        $this->assertInstanceOf(Contact::class, $short_message->contact);
+        $this->assertEquals(Mobile::number('09173011987'), $short_message->contact->mobile);
+        $this->assertEquals(Mobile::number('09173011987'), $short_message->contact->handle);
     }
 }

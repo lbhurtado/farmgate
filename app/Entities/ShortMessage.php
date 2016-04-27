@@ -7,6 +7,7 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 use Prettus\Repository\Contracts\Presentable;
 use Prettus\Repository\Traits\PresentableTrait;
+use App\Entities\Contact;
 
 define('INCOMING', -1);
 define('OUTGOING',  1);
@@ -14,8 +15,6 @@ define('OUTGOING',  1);
 class ShortMessage extends Model implements Transformable, Presentable
 {
     use TransformableTrait, PresentableTrait;
-
-//	protected $table = 'short_messages';
 
 	protected $attributes = [
 		'direction' => INCOMING,
@@ -28,25 +27,20 @@ class ShortMessage extends Model implements Transformable, Presentable
 		'direction'
 	];
 
-	protected $appends = ['mobile', 'handle'];
+	protected $appends = ['mobile'];
 
-	public function getMobile()
+	public static function getSignificantMobile(Array $attributes)
 	{
-		return ($this->direction == INCOMING ? $this->from : $this->to);
-	}
-
-	public function getHandle()
-	{
-		return $this->getMobile();
+		return $attributes['direction'] == INCOMING ? $attributes['from'] : $attributes['to'];
 	}
 
 	public function getMobileAttribute()
 	{
-		return ($this->direction == INCOMING ? $this->from : $this->to);
+		return self::getSignificantMobile($this->attributes);
 	}
 
-	public function getHandleAttribute()
+	public function contact()
 	{
-		return $this->getMobile();
+		return $this->belongsTo(Contact::class, 'from', 'mobile');
 	}
 }
