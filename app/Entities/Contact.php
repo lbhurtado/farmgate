@@ -44,7 +44,7 @@ class Contact extends Model implements Transformable, Presentable
 	{
 		$tokens = \App::make(TokenRepository::class)->skipPresenter();
 		$related = $tokens->claim($token);
-		$related->belongsToMany(get_class($this))->attach($this);
+		$related->members()->attach($this);
 
 		return $related;
 	}

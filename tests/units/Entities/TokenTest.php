@@ -98,14 +98,15 @@ class TokenTest extends TestCase
             'handle' => "lbhurtado"
         ]);
 
-        $token = $tokens->first();
+        $token = $tokens->find(2);
 
         $object = $contact->consumeToken($token->code);
 
+        $relation = $object->getTable();
+
         $this->assertEquals(
             $object->name,
-            $contact->belongsToMany(get_class($object))->find($object->id)->name
+            $contact->$relation()->find($object->id)->name
         );
-        
     }
 }
