@@ -1,11 +1,7 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Repositories\ShortMessageRepository;
 use App\Entities\ShortMessage;
-use libphonenumber\PhoneNumberFormat;
 use App\Criteria\IncomingShortMessageCriterion;
 use App\Events\ShortMessageWasRecorded;
 use App\Jobs\CreateContactFromShortMessage;
@@ -14,7 +10,7 @@ use App\Entities\Contact;
 
 class ShortMessageTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseMigrationsWithSeeding;
 
     /** @test */
     function short_message_has_from_to_message_and_calculated_mobile_fields()

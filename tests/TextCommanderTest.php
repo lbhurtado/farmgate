@@ -1,8 +1,5 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Repositories\ShortMessageRepository;
 use App\TextCommander;
 use App\Mobile;
@@ -10,7 +7,7 @@ use App\Entities\ShortMessage;
 
 class TextCommanderTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseMigrationsWithSeeding;
 
 //    /** @test */
 //    function text_commander_consumes_a_short_message()
@@ -72,7 +69,7 @@ class TextCommanderTest extends TestCase
             'direction' => INCOMING
         ];
         $commander = new TextCommander($attributes);
-        $short_message = $commander->recordShortMessage();
+        $short_message = $commander->recordShortMessage()->getShortMessage();
 
         $this->assertInstanceOf(ShortMessage::class, $short_message);
     }
@@ -86,14 +83,8 @@ class TextCommanderTest extends TestCase
             'message'   => "The quick brown fox...",
             'direction' => INCOMING
         ];
-        $short_message = TextCommander::ShortMessage($attributes);
+        $short_message = TextCommander::persistShortMessage($attributes)->getShortMessage();
 
         $this->assertInstanceOf(ShortMessage::class, $short_message);
-    }
-
-    /** @test */
-    function text_commander_can_retrieve_contact_from_short_message()
-    {
-
     }
 }

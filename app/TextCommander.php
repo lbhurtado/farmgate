@@ -11,6 +11,7 @@ class TextCommander
 {
     private $attributes;
 
+    private $short_message;
     /**
      * TextCommander constructor.
      * @param $attributes
@@ -25,10 +26,14 @@ class TextCommander
         return $this->attributes;
     }
 
+    public function getShortMessage()
+    {
+        return $this->short_message;
+    }
+
     public function isShortMessageByNewContact()
     {
         $mobile = ShortMessage::getSignificantMobile($this->attributes);
-
         $contacts = \App::make(ContactRepository::class)->skipPresenter();
 
         return count($contacts->findByField('mobile', $mobile)) == 0;
@@ -36,10 +41,12 @@ class TextCommander
 
     public function recordShortMessage()
     {
-        return \App::make(ShortMessageRepository::class)->skipPresenter()->create($this->attributes);
+        $this->short_message = \App::make(ShortMessageRepository::class)->skipPresenter()->create($this->attributes);
+
+        return $this;
     }
 
-    public static function ShortMessage(Array $attributes)
+    public static function persistShortMessage(Array $attributes)
     {
         return (new static($attributes))->recordShortMessage();
     }

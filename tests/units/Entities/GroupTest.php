@@ -1,14 +1,11 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Repositories\GroupRepository;
 use App\Entities\Group;
 
 class GroupTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseMigrationsWithSeeding;
 
     /** @test */
     function group_has_name()
@@ -80,5 +77,13 @@ class GroupTest extends TestCase
         App::make(GroupRepository::class)->create([
             'name' => 'Group 1'
         ]);
+    }
+
+    /** @test */
+    function there_are_default_groups()
+    {
+        $groups = App::make(GroupRepository::class)->skipPresenter();
+
+        $this->assertTrue(count($groups->all()) > 0);
     }
 }
