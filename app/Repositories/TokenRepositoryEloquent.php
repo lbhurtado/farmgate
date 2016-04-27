@@ -9,6 +9,7 @@ use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\TokenRepository;
 use App\Entities\Token;
 use App\Validators\TokenValidator;
+use Hackzilla\PasswordGenerator\Generator\ComputerPasswordGenerator;
 
 /**
  * Class TokenRepositoryEloquent
@@ -67,11 +68,20 @@ class TokenRepositoryEloquent extends BaseRepository implements TokenRepository
      */
     function generate(Collection $collection)
     {
-//        $tokens = App::make(TokenRepository::class)->skipPresenter();
+        $generator = new ComputerPasswordGenerator();
 
-        $collection->each(function($item, $key){
+        $generator
+            ->setOptionValue(ComputerPasswordGenerator::OPTION_UPPER_CASE, true)
+            ->setOptionValue(ComputerPasswordGenerator::OPTION_LOWER_CASE, true)
+            ->setOptionValue(ComputerPasswordGenerator::OPTION_NUMBERS, true)
+            ->setOptionValue(ComputerPasswordGenerator::OPTION_SYMBOLS, false)
+            ->setAvoidSimilar(true)
+            ->setLength(6)
+        ;
+
+        $collection->each(function($item, $key) use ($generator) {
             $this->create([
-                'code'       => str_random(10),
+                'code'       => $generator->generatePassword(),
                 'class'      => get_class($item),
                 'reference'  => $key
             ]);

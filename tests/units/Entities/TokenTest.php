@@ -2,6 +2,7 @@
 
 use App\Repositories\TokenRepository;
 use App\Repositories\GroupRepository;
+use App\Repositories\ContactRepository;
 use App\Entities\Group;
 
 class TokenTest extends TestCase
@@ -82,7 +83,29 @@ class TokenTest extends TestCase
         $tokens->generate($groups->all());
 
         $this->assertCount(count($groups->all()), $tokens->all());
+    }
 
-        dd($tokens->all()->toArray());
+    /** @test */
+    function tokens_can_auto_associate_contact()
+    {
+        $tokens = App::make(TokenRepository::class)->skipPresenter();
+        $groups = App::make(GroupRepository::class)->skipPresenter();
+        $contacts = App::make(ContactRepository::class)->skipPresenter();
+        $tokens->generate($groups->all());
+
+        $contact = $contacts->create([
+            'mobile' => '09173011987',
+            'handle' => "lbhurtado"
+        ]);
+
+        $token = $tokens->first();
+
+        $object = $contact->consumeToken($token->code);
+
+        $this->assertEquals(
+            $object->name,
+            $contact->belongsToMany(get_class($object))->find($object->id)->name
+        );
+        
     }
 }

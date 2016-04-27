@@ -8,6 +8,7 @@ use Prettus\Repository\Traits\TransformableTrait;
 use Prettus\Repository\Contracts\Presentable;
 use Prettus\Repository\Traits\PresentableTrait;
 use App\Mobile;
+use App\Repositories\TokenRepository;
 
 class Contact extends Model implements Transformable, Presentable
 {
@@ -37,5 +38,14 @@ class Contact extends Model implements Transformable, Presentable
 	public function short_messages()
 	{
 		return $this->hasMany(ShortMessage::class, 'from', 'mobile');
+	}
+
+	public function consumeToken($token)
+	{
+		$tokens = \App::make(TokenRepository::class)->skipPresenter();
+		$related = $tokens->claim($token);
+		$related->belongsToMany(get_class($this))->attach($this);
+
+		return $related;
 	}
 }
