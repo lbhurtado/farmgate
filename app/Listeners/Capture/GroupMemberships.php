@@ -2,20 +2,21 @@
 
 namespace App\Listeners\Capture;
 
-use App\Events\ShortMessageWasRecorded;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use App\Events\ShortMessageWasRecorded;
+use App\Repositories\TokenRepository;
 
 class GroupMemberships
 {
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
+    use DispatchesJobs;
+
+    private $tokens;
+
+    public function __construct(TokenRepository $tokens)
     {
-        //
+        $this->tokens = $tokens;
     }
 
     /**

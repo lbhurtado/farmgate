@@ -4,8 +4,8 @@ namespace App\Listeners\Capture;
 
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Events\ShortMessageWasRecorded;
 use Illuminate\Foundation\Bus\DispatchesJobs;
+use App\Events\ShortMessageWasRecorded;
 use App\Jobs\CreateContactFromShortMessage;
 
 class Contact

@@ -13,8 +13,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\ShortMessageWasRecorded' => [
-            'App\Listeners\Capture\Contact',
+        \App\Events\ShortMessageWasRecorded::class => [
+            \App\Listeners\Capture\Contact::class,
             'App\Listeners\Capture\GroupMemberships',
             'App\Listeners\Capture\Alerts',
             'App\Listeners\Capture\FieldData',

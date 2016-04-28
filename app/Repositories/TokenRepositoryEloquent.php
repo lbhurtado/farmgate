@@ -48,11 +48,20 @@ class TokenRepositoryEloquent extends BaseRepository implements TokenRepository
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
+    /**
+     * Populates the contact_id in tokens tables
+     * and soft deletes the record
+     *
+     * @param Contact $contact
+     * @param $code
+     * @return mixed
+     */
     function claim(Contact $contact, $code)
     {
-        $token = $this->findByField('code', $code)->first();
-        $object = \App::make($token->class)->find($token->id);
-        $token->claimed_by()->associate($contact);
+        $token = $this->findByField('code', $code)->first()
+            ->conjureObject()
+            ->claimed_by($contact);
+        $object = $token->getObject();
         $token->delete();
 
         return $object;
