@@ -46,7 +46,7 @@ class TokenTest extends TestCase
     }
 
     /** @test */
-    function tokens_can_be_claimed_returning_the_object()
+    function tokens_can_be_claimed_by_a_contact_returning_the_object()
     {
         $tokens = App::make(TokenRepository::class)->skipPresenter();
         $tokens->create([
@@ -63,7 +63,13 @@ class TokenTest extends TestCase
         $this->assertCount(2, $tokens->all());
 
         $claim_code = 'ABC1234';
-        $object = $tokens->claim($claim_code);
+
+        $contact = App::make(ContactRepository::class)->skipPresenter()->create([
+            'mobile' => '09173011987',
+            'handle' => "lbhurtado"
+        ]);
+
+        $object = $tokens->claim($contact, $claim_code);
         $group = App::make(GroupRepository::class)->skipPresenter()->find($object->id);
 
         $this->assertInstanceOf(Group::class, $object);
@@ -98,15 +104,15 @@ class TokenTest extends TestCase
             'handle' => "lbhurtado"
         ]);
 
-        $token = $tokens->find(2);
+        $token = $tokens->find(1);
 
-        $object = $contact->consumeToken($token->code);
+        $group_object = $contact->consumeToken($token->code);
 
-        $relation = $object->getTable();
+        $relation = $group_object->getTable();// get table name of relationship
 
         $this->assertEquals(
-            $object->name,
-            $contact->$relation()->find($object->id)->name
+            $group_object->name,
+            $contact->$relation()->find($group_object->id)->name
         );
     }
 }

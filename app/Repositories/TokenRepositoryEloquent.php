@@ -10,6 +10,7 @@ use App\Repositories\TokenRepository;
 use App\Entities\Token;
 use App\Validators\TokenValidator;
 use Hackzilla\PasswordGenerator\Generator\ComputerPasswordGenerator;
+use App\Entities\Contact;
 
 /**
  * Class TokenRepositoryEloquent
@@ -47,15 +48,11 @@ class TokenRepositoryEloquent extends BaseRepository implements TokenRepository
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
-    /**
-     * Consume the token
-     * @param $code
-     * @return mixed
-     */
-    function claim($code)
+    function claim(Contact $contact, $code)
     {
         $token = $this->findByField('code', $code)->first();
         $object = \App::make($token->class)->find($token->id);
+        $token->claimed_by()->associate($contact);
         $token->delete();
 
         return $object;
@@ -87,6 +84,4 @@ class TokenRepositoryEloquent extends BaseRepository implements TokenRepository
             ]);
         });
     }
-
-
 }

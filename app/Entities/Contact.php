@@ -43,7 +43,7 @@ class Contact extends Model implements Transformable, Presentable
 	public function consumeToken($token)
 	{
 		$tokens = \App::make(TokenRepository::class)->skipPresenter();
-		$related = $tokens->claim($token);
+		$related = $tokens->claim($this, $token);
 		$related->members()->attach($this);
 
 		return $related;
