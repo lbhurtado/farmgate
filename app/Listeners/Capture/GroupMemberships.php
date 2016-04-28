@@ -7,17 +7,11 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use App\Events\ShortMessageWasRecorded;
 use App\Repositories\TokenRepository;
+use App\Jobs\ClaimToken;
 
 class GroupMemberships
 {
     use DispatchesJobs;
-
-    private $tokens;
-
-    public function __construct(TokenRepository $tokens)
-    {
-        $this->tokens = $tokens;
-    }
 
     /**
      * Handle the event.
@@ -27,6 +21,8 @@ class GroupMemberships
      */
     public function handle(ShortMessageWasRecorded $event)
     {
-        //
+        $job = new ClaimToken($event->shortMessage);
+
+        $this->dispatch($job);
     }
 }

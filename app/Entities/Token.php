@@ -25,24 +25,6 @@ class Token extends Model implements Transformable
 
 	protected $dates = ['deleted_at'];
 
-	/**
-	 * Instantiate the class
-	 * when given the id
-	 *
-	 * @return $this
-     */
-	public function conjureObject()
-	{
-		$this->object = \App::make($this->class)->find($this->id);
-
-		return $this;
-	}
-
-	public function getObject()
-	{
-		return $this->object;
-	}
-
 	public function claimer()
 	{
 		return $this->belongsTo(Contact::class);
@@ -59,5 +41,23 @@ class Token extends Model implements Transformable
 		$this->claimer()->associate($contact);
 
 		return $this;
+	}
+
+	/**
+	 * Instantiate the class
+	 * when given the id
+	 *
+	 * @return $this
+	 */
+	public function conjureObject()
+	{
+		$this->object = \App::make($this->class)->find($this->reference);
+
+		return $this;
+	}
+
+	public function getObject()
+	{
+		return $this->object;
 	}
 }

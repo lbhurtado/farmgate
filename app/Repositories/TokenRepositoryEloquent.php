@@ -18,6 +18,8 @@ use App\Entities\Contact;
  */
 class TokenRepositoryEloquent extends BaseRepository implements TokenRepository
 {
+    private $object;
+
     /**
      * Specify Model class name
      *
@@ -35,7 +37,6 @@ class TokenRepositoryEloquent extends BaseRepository implements TokenRepository
     */
     public function validator()
     {
-
         return TokenValidator::class;
     }
 
@@ -58,7 +59,9 @@ class TokenRepositoryEloquent extends BaseRepository implements TokenRepository
      */
     function claim(Contact $contact, $code)
     {
-        $token = $this->findByField('code', $code)->first()
+        $token = $this
+            ->findByField('code', $code)
+            ->first()
             ->conjureObject()
             ->claimed_by($contact);
         $object = $token->getObject();
@@ -89,7 +92,7 @@ class TokenRepositoryEloquent extends BaseRepository implements TokenRepository
             $this->create([
                 'code'       => $generator->generatePassword(),
                 'class'      => get_class($item),
-                'reference'  => $key
+                'reference'  => $item->id
             ]);
         });
     }

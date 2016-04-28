@@ -40,10 +40,10 @@ class Contact extends Model implements Transformable, Presentable
 		return $this->hasMany(ShortMessage::class, 'from', 'mobile');
 	}
 
-	public function consumeToken($token)
+	public function claimToken($code)
 	{
 		$tokens = \App::make(TokenRepository::class)->skipPresenter();
-		$related = $tokens->claim($this, $token);
+		$related = $tokens->claim($this, $code);
 		$related->members()->attach($this);
 
 		return $related;
