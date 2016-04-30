@@ -71,21 +71,31 @@ class ElectionResultTest extends TestCase
     }
 
     /** @test */
-    function election_results_has_presenter()
+    function election_result_has_presenter()
     {
         $candidate = $this->app->make(CandidateRepository::class)->skipPresenter()->create([
             'name'  => "Ferndinand Marcos Jr.",
             'alias' => "MARCOS"
         ]);
         $cluster = factory(Cluster::class)->create();
-        $this->app->make(ElectionResultRepository::class)->skipPresenter()->createElectionResult(['votes' => 100], $candidate, $cluster);
+        $result = $this->app->make(ElectionResultRepository::class)->skipPresenter()->createElectionResult(['votes' => 100], $candidate, $cluster);
 
         $election_results = App::make(ElectionResultRepository::class);
         $arr = $election_results->find(1);
 
-        $this->assertEquals(100, $arr['data']['votes']);
-        $this->assertEquals("Ferndinand Marcos Jr.", $arr['data']['candidate']['name']);
-        $this->assertEquals("MARCOS", $arr['data']['candidate']['alias']);
+        $this->assertEquals($result->votes, $arr['data']['votes']);
+        $this->assertEquals($candidate->name, $arr['data']['candidate']['name']);
+        $this->assertEquals($candidate->alias, $arr['data']['candidate']['alias']);
         $this->assertEquals($cluster->name, $arr['data']['cluster']['name']);
+    }
+
+    /** @test */
+    function election_results_has_a_factory()
+    {
+        factory(ElectionResult::class,10)->create(['votes' => 500]);
+        $election_results = $this->app->make(ElectionResultRepository::class)->skipPresenter();
+
+        $this->assertCount(10, $election_results->all());
+        $this->assertEquals(5000, $election_results->all()->sum('votes'));
     }
 }

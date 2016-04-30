@@ -45,7 +45,7 @@ $factory->define(App\Entities\Group::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Entities\Cluster::class, function (Faker\Generator $faker) {
     return [
-        'name' => $faker->company,
+        'name' => $faker->company . $faker->numberBetween(1,9999),
         'precincts' => str_pad($faker->numberBetween(1,99), 3, STR_PAD_LEFT) . $faker->randomElement(["A", "B", "C", "D", "E"]),
         'registered_voters' =>  rand(100, 1000),
     ];
@@ -53,7 +53,17 @@ $factory->define(App\Entities\Cluster::class, function (Faker\Generator $faker) 
 
 $factory->define(App\Entities\Candidate::class, function (Faker\Generator $faker) {
     return [
-        'name' => $faker->name,
-        'alias' => $faker->lastName
+        'name' => $faker->name . $faker->numberBetween(1,9999),
+        'alias' => $faker->lastName . $faker->numberBetween(1,9999)
+    ];
+});
+
+$factory->define(App\Entities\ElectionResult::class, function (Faker\Generator $faker) {
+    $candidate = factory(\App\Entities\Candidate::class)->create();
+    $cluster = factory(\App\Entities\Cluster::class)->create();
+    return [
+        'votes' => $faker->numberBetween(500,800),
+        'candidate_id' => $candidate->id,
+        'cluster_id' => $cluster->id,
     ];
 });
