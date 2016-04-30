@@ -52,7 +52,18 @@ class Contact extends Model implements Transformable, Presentable
 	{
 		$tokens = \App::make(TokenRepository::class)->skipPresenter();
 		$related = $tokens->claim($this, $code);
-		$related->members()->attach($this);
+
+		$relationship = (new \ReflectionClass(get_class($related->contacts())))->getShortName();
+		switch ($relationship)
+		{
+			case 'BelongsToMany':
+				$related->contacts()->attach($this);
+				break;
+			case 'BelongsTo':
+				$related->contacts()->associate($this);
+				$related->save();
+				break;
+		}
 
 		if ($related)
 		{

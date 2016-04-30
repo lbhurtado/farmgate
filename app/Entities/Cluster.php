@@ -25,8 +25,8 @@ class Cluster extends Model implements Transformable
 		'registered_voters' => 0,
 	];
 
-	public function contact()
+	public function contacts()
 	{
-		return $this->belongsTo(Contact::class);
+		return $this->belongsTo(Contact::class, 'contact_id');
 	}
 }

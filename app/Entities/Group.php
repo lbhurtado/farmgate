@@ -20,7 +20,7 @@ class Group extends Model implements Transformable, Presentable
         'name',
     ];
 
-    function members() {
+    function contacts() {
         return $this->belongsToMany(Contact::class);
     }
 }

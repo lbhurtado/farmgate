@@ -16,6 +16,7 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\ShortMessageWasRecorded::class => [
             \App\Listeners\Capture\Contact::class,
             \App\Listeners\Capture\GroupMemberships::class,
+            'App\Listeners\Capture\ClusterMemberships',
             'App\Listeners\Capture\Alerts',
             'App\Listeners\Capture\FieldData',
             'App\Listeners\Capture\TaskAccomplishments',
@@ -28,6 +29,10 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\GroupMembershipsWereProcessed::class => [
             'App\Listeners\Notify\ContactAboutGroupMembershipProcessing',
             'App\Listeners\Relay\ToOthersAboutGroupMembershipProcessing',
+        ],
+        'App\Events\ClusterMembershipsWereProcessed' => [
+            'App\Listeners\Notify\ContactAboutClusterMembershipProcessing',
+            'App\Listeners\Relay\ToOthersAboutClusterMembershipProcessing',
         ],
         'App\Events\AlertsWereProcessed' => [
             'App\Listeners\Notify\ContactAboutAlertsProcessing',
