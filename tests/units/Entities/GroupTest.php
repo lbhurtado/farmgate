@@ -10,7 +10,7 @@ class GroupTest extends TestCase
     /** @test */
     function group_has_name()
     {
-        $group = App::make(GroupRepository::class)->skipPresenter()->create([
+        $group = $this->app->make(GroupRepository::class)->skipPresenter()->create([
             'name' => "Group 1"
         ]);
 
@@ -26,7 +26,7 @@ class GroupTest extends TestCase
     {
         $this->setExpectedException(Prettus\Validator\Exceptions\ValidatorException::class);
 
-        App::make(GroupRepository::class)->create([]);
+        $this->app->make(GroupRepository::class)->create([]);
     }
 
     /** @test */
@@ -34,7 +34,7 @@ class GroupTest extends TestCase
     {
         $this->setExpectedException(Prettus\Validator\Exceptions\ValidatorException::class);
 
-        App::make(GroupRepository::class)->create([
+        $this->app->make(GroupRepository::class)->create([
             'name'  => '',
         ]);
     }
@@ -55,7 +55,7 @@ class GroupTest extends TestCase
     /** @test */
     function group_has_a_presenter()
     {
-        $contact = App::make(GroupRepository::class)->create([
+        $contact = $this->app->make(GroupRepository::class)->create([
             'name' => 'Group 1'
         ]);
 
@@ -70,11 +70,11 @@ class GroupTest extends TestCase
     {
         $this->setExpectedException(Illuminate\Database\QueryException::class);
 
-        App::make(GroupRepository::class)->create([
+        $this->app->make(GroupRepository::class)->create([
             'name' => 'Group 1'
         ]);
 
-        App::make(GroupRepository::class)->create([
+        $this->app->make(GroupRepository::class)->create([
             'name' => 'Group 1'
         ]);
     }
@@ -82,7 +82,7 @@ class GroupTest extends TestCase
     /** @test */
     function there_are_default_groups()
     {
-        $groups = App::make(GroupRepository::class)->skipPresenter();
+        $groups = $this->app->make(GroupRepository::class)->skipPresenter();
 
         $this->assertTrue(count($groups->all()) > 0);
     }
