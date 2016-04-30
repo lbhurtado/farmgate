@@ -9,6 +9,7 @@ use App\Events\GroupMembershipsWereProcessed;
 use Prettus\Repository\Contracts\Presentable;
 use Illuminate\Database\Eloquent\Model;
 use App\Repositories\TokenRepository;
+use App\Entities\Cluster;
 use App\Mobile;
 
 class Contact extends Model implements Transformable, Presentable
@@ -25,8 +26,14 @@ class Contact extends Model implements Transformable, Presentable
 		'handle'
 	];
 
-	public function groups() {
+	public function groups()
+	{
 		return $this->belongsToMany(Group::class);
+	}
+
+	public function cluster()
+	{
+		return $this->hasOne(Cluster::class);
 	}
 
 	public function getMobileAttribute()

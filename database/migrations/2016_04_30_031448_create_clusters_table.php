@@ -18,7 +18,8 @@ class CreateClustersTable extends Migration
 			$table->string('name')->unique();
 			$table->string('precincts');
 			$table->integer('registered_voters');
-
+			$table->integer('contact_id')->unsigned()->nullable();
+			$table->foreign('contact_id')->references('id')->on('contacts')->onDelete('set null');
             $table->timestamps();
 		});
 	}

@@ -2,9 +2,10 @@
 
 namespace App\Entities;
 
-use Illuminate\Database\Eloquent\Model;
-use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
+use Prettus\Repository\Contracts\Transformable;
+use Illuminate\Database\Eloquent\Model;
+use App\Entities\Contact;
 
 class Cluster extends Model implements Transformable
 {
@@ -23,4 +24,9 @@ class Cluster extends Model implements Transformable
 	protected $attributes = [
 		'registered_voters' => 0,
 	];
+
+	public function contact()
+	{
+		return $this->belongsTo(Contact::class);
+	}
 }
