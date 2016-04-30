@@ -170,7 +170,7 @@ class ShortMessageTest extends TestCase
         $short_message = App::make(ShortMessageRepository::class)->skipPresenter()->create([
             'from'      => '09173011987',
             'to'        => '09189362340',
-            'message'   => "The quick brown fox...",
+            'message'   => "POE 123 BINAY 234 DUTERTE 345 ROXAS 456",
             'direction' => INCOMING
         ]);
 

@@ -2,13 +2,14 @@
 
 namespace App\Entities;
 
-use Illuminate\Database\Eloquent\Model;
-use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
-use Prettus\Repository\Contracts\Presentable;
 use Prettus\Repository\Traits\PresentableTrait;
-use App\Mobile;
+use Prettus\Repository\Contracts\Transformable;
+use App\Events\GroupMembershipsWereProcessed;
+use Prettus\Repository\Contracts\Presentable;
+use Illuminate\Database\Eloquent\Model;
 use App\Repositories\TokenRepository;
+use App\Mobile;
 
 class Contact extends Model implements Transformable, Presentable
 {
@@ -45,6 +46,14 @@ class Contact extends Model implements Transformable, Presentable
 		$tokens = \App::make(TokenRepository::class)->skipPresenter();
 		$related = $tokens->claim($this, $code);
 		$related->members()->attach($this);
+
+		if ($related)
+		{
+			if (get_class($related) == Group::class)
+			{
+				event(new GroupMembershipsWereProcessed($related));
+			}
+		}
 
 		return $related;
 	}

@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Entities;
+
+use Illuminate\Database\Eloquent\Model;
+use Prettus\Repository\Contracts\Transformable;
+use Prettus\Repository\Traits\TransformableTrait;
+
+class Cluster extends Model implements Transformable
+{
+    use TransformableTrait;
+
+    protected $fillable = [
+		'name',
+		'precincts',
+		'registered_voters',
+	];
+
+	protected $casts = [
+		'registered_voters' => 'integer'
+	];
+
+	protected $attributes = [
+		'registered_voters' => 0,
+	];
+}

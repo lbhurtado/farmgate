@@ -2,11 +2,16 @@
 
 namespace App\Providers;
 
+use App\Listeners\Notify\ContactAboutGroupMembershipProcessing;
+use Illuminate\Database\Eloquent\Relations\Pivot;
+use App\Events\GroupMembershipsWereProcessed;
 use Illuminate\Support\ServiceProvider;
+use App\Events\ShortMessageWasRecorded;
+use App\Events\ContactWasCreated;
 use App\Entities\ShortMessage;
 use App\Entities\Contact;
-use libphonenumber\PhoneNumberFormat;
-use App\Events\ShortMessageWasRecorded;
+use App\Entities\Group;
+use App\Mobile;
 
 class ModelServiceProvider extends ServiceProvider
 {
@@ -20,22 +25,26 @@ class ModelServiceProvider extends ServiceProvider
         parent::boot();
 
         ShortMessage::creating(function ($model) {
-            $model->from = phone_format($model->from, 'PH', PhoneNumberFormat::E164);
-            $model->to   = phone_format($model->to,   'PH', PhoneNumberFormat::E164);
+            $model->from = Mobile::number($model->from);
+            $model->to   = Mobile::number($model->to);
         });
 
         Contact::creating(function ($model) {
-            $model->mobile = phone_format($model->mobile, 'PH', PhoneNumberFormat::E164);
+            $model->mobile = Mobile::number($model->mobile);
             $model->handle = $model->handle ?: $model->mobile;
         });
 
         Contact::updating(function ($model) {
-            $model->mobile = phone_format($model->mobile, 'PH', PhoneNumberFormat::E164);
+            $model->mobile = Mobile::number($model->mobile);
             $model->handle = $model->handle ?: $model->mobile;
         });
 
         ShortMessage::created(function ($model) {
             event(new ShortMessageWasRecorded($model));
+        });
+
+        Contact::created(function ($model) {
+            event(new ContactWasCreated($model));
         });
     }
 

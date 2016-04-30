@@ -1,8 +1,8 @@
 <?php
 
+use App\Repositories\ContactRepository;
 use App\Repositories\TokenRepository;
 use App\Repositories\GroupRepository;
-use App\Repositories\ContactRepository;
 use App\Entities\Group;
 
 class TokenTest extends TestCase

@@ -2,15 +2,15 @@
 
 namespace App\Repositories;
 
-use App\Entities\Group;
-use Illuminate\Support\Collection;
-use Prettus\Repository\Eloquent\BaseRepository;
-use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\TokenRepository;
-use App\Entities\Token;
-use App\Validators\TokenValidator;
 use Hackzilla\PasswordGenerator\Generator\ComputerPasswordGenerator;
+use Prettus\Repository\Criteria\RequestCriteria;
+use Prettus\Repository\Eloquent\BaseRepository;
+use App\Validators\TokenValidator;
+use Illuminate\Support\Collection;
 use App\Entities\Contact;
+use App\Entities\Group;
+use App\Entities\Token;
+
 
 /**
  * Class TokenRepositoryEloquent

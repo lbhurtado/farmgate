@@ -15,17 +15,17 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         \App\Events\ShortMessageWasRecorded::class => [
             \App\Listeners\Capture\Contact::class,
-            'App\Listeners\Capture\GroupMemberships',
+            \App\Listeners\Capture\GroupMemberships::class,
             'App\Listeners\Capture\Alerts',
             'App\Listeners\Capture\FieldData',
             'App\Listeners\Capture\TaskAccomplishments',
             'App\Listeners\Capture\PollResults',
         ],
-        'App\Events\ContactWasCreated' => [
+        \App\Events\ContactWasCreated::class => [
             'App\Listeners\Notify\ContactAboutContactCreation',
             'App\Listeners\Relay\ToOthersAboutContactCreation',
         ],
-        'App\Events\GroupMembershipsWereProcessed' => [
+        \App\Events\GroupMembershipsWereProcessed::class => [
             'App\Listeners\Notify\ContactAboutGroupMembershipProcessing',
             'App\Listeners\Relay\ToOthersAboutGroupMembershipProcessing',
         ],

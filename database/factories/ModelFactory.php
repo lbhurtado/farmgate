@@ -42,3 +42,11 @@ $factory->define(App\Entities\Group::class, function (Faker\Generator $faker) {
         'name' => $faker->company,
     ];
 });
+
+$factory->define(App\Entities\Cluster::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->company,
+        'precincts' => str_pad($faker->numberBetween(1,99), 3, STR_PAD_LEFT) . $faker->randomElement(["A", "B", "C", "D", "E"]),
+        'registered_voters' =>  rand(100, 1000),
+    ];
+});

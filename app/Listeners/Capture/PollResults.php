@@ -26,6 +26,12 @@ class PollResults
      */
     public function handle(ShortMessageWasRecorded $event)
     {
-        //
+        $input_lines = $event->shortMessage->message;
+
+        if (preg_match_all("/(?P<candidate>\w+) (?P<votes>\d+)/", $input_lines, $output_array)){
+
+//            var_dump($output_array);
+        }
+
     }
 }
