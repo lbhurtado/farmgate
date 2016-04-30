@@ -2,12 +2,15 @@
 
 namespace App\Listeners\Capture;
 
-use App\Events\ShortMessageWasRecorded;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use App\Events\ShortMessageWasRecorded;
+use App\Jobs\TallyVotes;
 
 class PollResults
 {
+    use DispatchesJobs;
     /**
      * Create the event listener.
      *
@@ -26,12 +29,17 @@ class PollResults
      */
     public function handle(ShortMessageWasRecorded $event)
     {
-        $input_lines = $event->shortMessage->message;
+        $contact = $event->shortMessage->contact;
+        $message = $event->shortMessage->message;
 
-        if (preg_match_all("/(?P<candidate>\w+) (?P<votes>\d+)/", $input_lines, $output_array)){
+        $instruction = $event->shortMessage->getInstruction();
+        if ($instruction->isValid())
+        {
+            $job = new TallyVotes();
 
-//            var_dump($output_array);
+            $this->dispatch($job);
+
+            var_dump($instruction->getMessage());
         }
-
     }
 }

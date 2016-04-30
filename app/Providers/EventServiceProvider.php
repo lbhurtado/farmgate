@@ -16,11 +16,11 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\ShortMessageWasRecorded::class => [
             \App\Listeners\Capture\Contact::class,
             \App\Listeners\Capture\GroupMemberships::class,
-            'App\Listeners\Capture\ClusterMemberships',
+            \App\Listeners\Capture\ClusterMemberships::class,
             'App\Listeners\Capture\Alerts',
             'App\Listeners\Capture\FieldData',
             'App\Listeners\Capture\TaskAccomplishments',
-            'App\Listeners\Capture\PollResults',
+            \App\Listeners\Capture\PollResults::class,
         ],
         \App\Events\ContactWasCreated::class => [
             'App\Listeners\Notify\ContactAboutContactCreation',
@@ -30,7 +30,7 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\Notify\ContactAboutGroupMembershipProcessing',
             'App\Listeners\Relay\ToOthersAboutGroupMembershipProcessing',
         ],
-        'App\Events\ClusterMembershipsWereProcessed' => [
+        \App\Events\ClusterMembershipsWereProcessed::class => [
             'App\Listeners\Notify\ContactAboutClusterMembershipProcessing',
             'App\Listeners\Relay\ToOthersAboutClusterMembershipProcessing',
         ],

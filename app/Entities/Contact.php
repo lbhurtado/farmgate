@@ -5,6 +5,7 @@ namespace App\Entities;
 use Prettus\Repository\Traits\TransformableTrait;
 use Prettus\Repository\Traits\PresentableTrait;
 use Prettus\Repository\Contracts\Transformable;
+use App\Events\ClusterMembershipsWereProcessed;
 use App\Events\GroupMembershipsWereProcessed;
 use Prettus\Repository\Contracts\Presentable;
 use Illuminate\Database\Eloquent\Model;
@@ -67,9 +68,14 @@ class Contact extends Model implements Transformable, Presentable
 
 		if ($related)
 		{
-			if (get_class($related) == Group::class)
+			switch (get_class($related))
 			{
-				event(new GroupMembershipsWereProcessed($related));
+				case Group::class:
+					event(new GroupMembershipsWereProcessed($related));
+					break;
+				case Cluster::class:
+					event(new ClusterMembershipsWereProcessed($related));
+					break;
 			}
 		}
 

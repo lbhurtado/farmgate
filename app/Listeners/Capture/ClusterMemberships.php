@@ -8,7 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use App\Events\ShortMessageWasRecorded;
 use App\Jobs\ClaimToken;
 
-class GroupMemberships
+class ClusterMemberships
 {
     use DispatchesJobs;
 

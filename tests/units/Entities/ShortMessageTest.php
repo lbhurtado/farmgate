@@ -5,8 +5,9 @@ use App\Entities\ShortMessage;
 use App\Criteria\IncomingShortMessageCriterion;
 use App\Events\ShortMessageWasRecorded;
 use App\Jobs\CreateContactFromShortMessage;
-use App\Mobile;
 use App\Entities\Contact;
+use App\Instruction;
+use App\Mobile;
 
 class ShortMessageTest extends TestCase
 {
@@ -15,7 +16,7 @@ class ShortMessageTest extends TestCase
     /** @test */
     function short_message_has_from_to_message_and_calculated_mobile_fields()
     {
-        $short_message = App::make(ShortMessageRepository::class)->skipPresenter()->create([
+        $short_message = $this->app->make(ShortMessageRepository::class)->skipPresenter()->create([
             'from'      => '09173011987',
             'to'        => '09189362340',
             'message'   => "The quick brown fox...",
@@ -41,7 +42,7 @@ class ShortMessageTest extends TestCase
     {
         $this->setExpectedException(Prettus\Validator\Exceptions\ValidatorException::class);
 
-        App::make(ShortMessageRepository::class)->create([
+        $this->app->make(ShortMessageRepository::class)->create([
             'from' => '09173011987',
             'to'   => '09189362340',
         ]);
@@ -52,7 +53,7 @@ class ShortMessageTest extends TestCase
     {
         $this->setExpectedException(Prettus\Validator\Exceptions\ValidatorException::class);
 
-        App::make(ShortMessageRepository::class)->create([
+        $this->app->make(ShortMessageRepository::class)->create([
             'from'      => '09173011987',
             'to'        => '09189362340',
             'message'   => '',
@@ -65,7 +66,7 @@ class ShortMessageTest extends TestCase
     {
         $this->setExpectedException(Prettus\Validator\Exceptions\ValidatorException::class);
 
-        App::make(ShortMessageRepository::class)->create([
+        $this->app->make(ShortMessageRepository::class)->create([
             'from'      => '1234',
             'to'        => '09189362340',
             'message'   => "The quick brown fox...",
@@ -78,7 +79,7 @@ class ShortMessageTest extends TestCase
     {
         $this->setExpectedException(Prettus\Validator\Exceptions\ValidatorException::class);
 
-        App::make(ShortMessageRepository::class)->create([
+        $this->app->make(ShortMessageRepository::class)->create([
             'from'      => '09173011987',
             'to'        => '4321',
             'message'   => "The quick brown fox...",
@@ -103,7 +104,7 @@ class ShortMessageTest extends TestCase
     /** @test */
     function short_message_has_a_presenter()
     {
-        $sms = App::make(ShortMessageRepository::class)->create([
+        $sms =  $this->app->make(ShortMessageRepository::class)->create([
             'from'      => '09173011987',
             'to'        => '09189362340',
             'message'   => "The quick brown fox...",
@@ -119,14 +120,14 @@ class ShortMessageTest extends TestCase
     /** @test */
     function short_message_has_an_incoming_criterion()
     {
-        App::make(ShortMessageRepository::class)->create([
+        $this->app->make(ShortMessageRepository::class)->create([
             'from'      => '09189362340',
             'to'        => '09173011987',
             'message'   => "Outgoing message",
             'direction' => OUTGOING,
         ]);
 
-        App::make(ShortMessageRepository::class)->create([
+        $this->app->make(ShortMessageRepository::class)->create([
             'from'      => '09173011987',
             'to'        => '09189362340',
             'message'   => "Incoming message",
@@ -143,7 +144,7 @@ class ShortMessageTest extends TestCase
     {
         $this->expectsEvents(ShortMessageWasRecorded::class);
 
-        App::make(ShortMessageRepository::class)->skipPresenter()->create([
+        $this->app->make(ShortMessageRepository::class)->skipPresenter()->create([
             'from'      => '09173011987',
             'to'        => '09189362340',
             'message'   => "The quick brown fox...",
@@ -156,7 +157,7 @@ class ShortMessageTest extends TestCase
     {
         $this->expectsJobs(CreateContactFromShortMessage::class);
 
-        App::make(ShortMessageRepository::class)->skipPresenter()->create([
+        $this->app->make(ShortMessageRepository::class)->skipPresenter()->create([
             'from'      => '09173011987',
             'to'        => '09189362340',
             'message'   => "The quick brown fox...",
@@ -167,7 +168,7 @@ class ShortMessageTest extends TestCase
     /** @test */
     function short_message_has_a_contact()
     {
-        $short_message = App::make(ShortMessageRepository::class)->skipPresenter()->create([
+        $short_message =  $this->app->make(ShortMessageRepository::class)->skipPresenter()->create([
             'from'      => '09173011987',
             'to'        => '09189362340',
             'message'   => "POE 123 BINAY 234 DUTERTE 345 ROXAS 456",
@@ -177,5 +178,18 @@ class ShortMessageTest extends TestCase
         $this->assertInstanceOf(Contact::class, $short_message->contact);
         $this->assertEquals(Mobile::number('09173011987'), $short_message->contact->mobile);
         $this->assertEquals(Mobile::number('09173011987'), $short_message->contact->handle);
+    }
+
+    /** @test */
+    function short_message_has_a_poll_keyword()
+    {
+        $short_message = $this->app->make(ShortMessageRepository::class)->skipPresenter()->create([
+            'from'      => '09173011987',
+            'to'        => '09189362340',
+            'message'   => "txt poll POE 123 BINAY 234 DUTERTE 345 ROXAS 456",
+            'direction' => INCOMING
+        ]);
+
+        $this->assertEquals('TXT POLL', $short_message->keyword);
     }
 }
