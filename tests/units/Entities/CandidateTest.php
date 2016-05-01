@@ -35,4 +35,22 @@ class CandidateTest extends TestCase
         $this->assertEquals("Ferndinand Marcos Jr.", $candidate['data']['name']);
         $this->assertEquals("MARCOS", $candidate['data']['alias']);
     }
+
+    /** @test */
+    function candidate_can_be_looked_up_using_alias()
+    {
+        $this->app->make(CandidateRepository::class)->create([
+            'name'  => "Ferndinand Marcos Jr.",
+            'alias' => "marcos"
+        ]);
+
+        $this->app->make(CandidateRepository::class)->create([
+            'name'  => "Leni Robredo",
+            'alias' => "ROBREDO"
+        ]);
+
+        $candidates = $this->app->make(CandidateRepository::class)->skipPresenter();
+
+        $this->assertEquals("Ferndinand Marcos Jr.", $candidates->findByAlias('marcos')->name);
+    }
 }

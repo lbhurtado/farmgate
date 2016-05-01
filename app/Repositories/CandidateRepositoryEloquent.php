@@ -45,6 +45,22 @@ class CandidateRepositoryEloquent extends BaseRepository implements CandidateRep
     }
 
     /**
+     * Get record by alias
+     *
+     * @param $alias
+     * @return Candidate $candidate
+     */
+    public function findByAlias($alias)
+    {
+        $temporarySkipPresenter = $this->skipPresenter;
+        $this->skipPresenter(true);
+        $candidate = $this->findByField('alias', strtoupper($alias))->first();
+        $this->skipPresenter($temporarySkipPresenter);
+
+        return $candidate;
+    }
+
+    /**
      * Boot up the repository, pushing criteria
      */
     public function boot()

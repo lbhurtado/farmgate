@@ -132,7 +132,8 @@ class ClaimTokenTest extends TestCase
 
         $contacts = $this->app->make(ContactRepository::class)->skipPresenter();
         $contact = $contacts->all()->first();
-        $this->assertEquals("Test Cluster", $contact->cluster->first()->name);
+
+        $this->assertEquals("Test Cluster", $contact->cluster->name);
     }
 
     /** @test */

@@ -30,16 +30,19 @@ class PollResults
     public function handle(ShortMessageWasRecorded $event)
     {
         $contact = $event->shortMessage->contact;
+        $cluster = $contact->cluster;
+
         $message = $event->shortMessage->message;
 
         $instruction = $event->shortMessage->getInstruction();
+
+//        var_dump($instruction);
+
         if ($instruction->isValid())
         {
-            $job = new TallyVotes();
-
-            $this->dispatch($job);
-
-            var_dump($instruction->getMessage());
+//            $job = new TallyVotes($instruction);
+//
+//            $this->dispatch($job);
         }
     }
 }

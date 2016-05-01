@@ -65,11 +65,14 @@ class ElectionResultRepositoryEloquent extends BaseRepository implements Electio
      */
     public function createElectionResult($attributes, Candidate $candidate, Cluster $cluster)
     {
+        $temporarySkipPresenter = $this->skipPresenter;
+        $this->skipPresenter(true);
         $model = parent::create($attributes);
         $model->candidate()->associate($candidate);
         $model->cluster()->associate($cluster);
         $model->save();
-
+        $this->skipPresenter($temporarySkipPresenter);
+        
         return $model;
     }
 

@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+use App\Entities\ShortMessage;
 
 class Instruction
 {
@@ -8,6 +9,8 @@ class Instruction
         'txt reg',
         'txt poll',
     ];
+
+    protected $short_message;
 
     protected $message;
 
@@ -19,11 +22,13 @@ class Instruction
      * Instruction constructor.
      * @param $message
      */
-    public function __construct($message)
+    public function __construct(ShortMessage $short_message)
     {
-        $this->message = $message;
+        $this->short_message = $short_message;
 
-        if ($message)
+        $this->message = $this->short_message->message;
+
+        if ($this->message)
         {
             $keywords = implode('|', static::$keywords);
 
@@ -68,4 +73,14 @@ class Instruction
     {
         return new static($message);
     }
+
+    /**
+     * @return ShortMessage
+     */
+    public function getShortMessage()
+    {
+        return $this->short_message;
+    }
+
+
 }

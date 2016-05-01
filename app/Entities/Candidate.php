@@ -16,4 +16,8 @@ class Candidate extends Model implements Transformable
 		'alias',
 	];
 
+	function setAliasAttribute($value)
+	{
+		$this->attributes['alias'] = strtoupper($value);
+	}
 }
