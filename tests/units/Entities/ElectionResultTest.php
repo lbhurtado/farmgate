@@ -132,7 +132,7 @@ class ElectionResultTest extends TestCase
     }
 
     /** @test */
-    function election_results_can_be_summed_per_candidate()
+    function election_results_can_be_summed_per_criterion()
     {
         $candidate1 = $this->app->make(CandidateRepository::class)->skipPresenter()->create([
             'name'  => "Ferndinand Marcos Jr.",
@@ -157,15 +157,9 @@ class ElectionResultTest extends TestCase
         $election_results->createElectionResult(500, $candidate2, $cluster5);
 
         $this->assertCount(5, $election_results->all());
-        $this->assertEquals(600, $election_results->getByCriteria(new CandidateCriterion('marcos'))->sum('votes'));
-        $this->assertEquals(900, $election_results->getByCriteria(new CandidateCriterion('robredo'))->sum('votes'));
-        $this->assertEquals(1200, $election_results->getByCriteria(new TownCriterion($town2->name))->sum('votes'));
-        $this->assertEquals(
-            1200,
-            $election_results
-                ->getByCriteria(new TownCriterion($town2->name))
-                ->getByCriteria(new CandidateCriterion('robredo'))->sum('votes')
-        );
+        $this->assertEquals(600, $election_results->getByCriteria(new CandidateCriterion($candidate1))->sum('votes'));
+        $this->assertEquals(900, $election_results->getByCriteria(new CandidateCriterion($candidate2))->sum('votes'));
+        $this->assertEquals(1200, $election_results->getByCriteria(new TownCriterion($town2))->sum('votes'));
         $this->assertEquals(1500, $election_results->all()->sum('votes'));
     }
 }

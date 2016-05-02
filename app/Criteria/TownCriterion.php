@@ -10,18 +10,18 @@ namespace App\Criteria;
 
 use Prettus\Repository\Contracts\RepositoryInterface;
 use Prettus\Repository\Contracts\CriteriaInterface;
+use App\Entities\Town;
 
 class TownCriterion implements CriteriaInterface
 {
-    private $town_name;
+    private $town;
 
     /**
-     * TownCriterion constructor.
-     * @param $town_name
+     * @param Town $town
      */
-    public function __construct($town_name)
+    public function __construct(Town $town)
     {
-        $this->town_name = $town_name;
+        $this->town = $town;
     }
 
     /**
@@ -34,13 +34,11 @@ class TownCriterion implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $town_name = $this->town_name;
-
-        $model = $model->with('cluster')->whereHas('cluster', function($q) use ($town_name)
+        $model = $model->with('cluster')->whereHas('cluster', function($q)
         {
-            $q->with('town')->whereHas('town',function($q) use ($town_name)
+            $q->with('town')->whereHas('town', function($q)
             {
-                $q->where('name', '=', $town_name);
+                $q->where('id', '=', $this->town->id);
             });
         });
 

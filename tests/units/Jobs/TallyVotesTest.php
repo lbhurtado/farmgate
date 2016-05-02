@@ -45,12 +45,12 @@ class TallyVotesTest extends TestCase
     /** @test */
     function tally_votes_does_the_job()
     {
-        factory(Candidate::class)->create([
+        $candidate1 = factory(Candidate::class)->create([
             'name'  => "Ferndinand Marcos Jr.",
             'alias' => "MARCOS"
         ]);
 
-        factory(Candidate::class)->create([
+        $candidate2 = factory(Candidate::class)->create([
             'name'  => "Leni Robredo",
             'alias' => "ROBREDO"
         ]);
@@ -80,15 +80,15 @@ class TallyVotesTest extends TestCase
         $this->dispatch($job);
 
         $this->assertCount(2, $this->election_results->all());
-        $this->assertEquals(777, $this->election_results->getByCriteria(new CandidateCriterion('marcos'))->sum('votes'));
-        $this->assertEquals(222, $this->election_results->getByCriteria(new CandidateCriterion('robredo'))->sum('votes'));
+        $this->assertEquals(777, $this->election_results->getByCriteria(new CandidateCriterion($candidate1))->sum('votes'));
+        $this->assertEquals(222, $this->election_results->getByCriteria(new CandidateCriterion($candidate2))->sum('votes'));
 
         $message3 = factory(ShortMessage::class)->create([
             'from' => $mobile1,
             'message' => $this->poll_keyword . " " . "marcos 778 ROBREDO 2230 ESCUDERO 1"
         ]);
         $this->assertCount(2, $this->election_results->all());
-        $this->assertEquals(778, $this->election_results->getByCriteria(new CandidateCriterion('marcos'))->sum('votes'));
-        $this->assertEquals(222, $this->election_results->getByCriteria(new CandidateCriterion('robredo'))->sum('votes'));
+        $this->assertEquals(778, $this->election_results->getByCriteria(new CandidateCriterion($candidate1))->sum('votes'));
+        $this->assertEquals(222, $this->election_results->getByCriteria(new CandidateCriterion($candidate2))->sum('votes'));
     }
 }

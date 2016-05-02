@@ -10,18 +10,18 @@ namespace App\Criteria;
 
 use Prettus\Repository\Contracts\RepositoryInterface;
 use Prettus\Repository\Contracts\CriteriaInterface;
+use App\Entities\Candidate;
 
 class CandidateCriterion implements CriteriaInterface
 {
-    private $alias;
+    private $candidate;
 
     /**
-     * CandidateCriterion constructor.
-     * @param $alias
+     * @param Candidate $candidate
      */
-    public function __construct($alias)
+    public function __construct(Candidate $candidate)
     {
-        $this->alias = strtoupper($alias);
+        $this->candidate = $candidate;
     }
 
 
@@ -35,8 +35,8 @@ class CandidateCriterion implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $model = $model->with('candidate')->whereHas('candidate', function($q){
-            $q->where('alias', '=', $this->alias);
+        $model = $model->with('candidate')->whereHas('candidate', function($q) {
+            $q->where('id', '=', $this->candidate->id);
         });
 
         return $model;
