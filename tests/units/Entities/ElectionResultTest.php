@@ -4,8 +4,10 @@ use App\Repositories\ElectionResultRepository;
 use App\Repositories\CandidateRepository;
 use App\Criteria\CandidateCriterion;
 use App\Entities\ElectionResult;
+use App\Criteria\TownCriterion;
 use App\Entities\Candidate;
 use App\Entities\Cluster;
+use App\Entities\Town;
 
 class ElectionResultTest extends TestCase
 {
@@ -140,11 +142,13 @@ class ElectionResultTest extends TestCase
             'name'  => "Leni Robredo",
             'alias' => "ROBREDO"
         ]);
-        $cluster1 = factory(Cluster::class)->create();
-        $cluster2 = factory(Cluster::class)->create();
-        $cluster3 = factory(Cluster::class)->create();
-        $cluster4 = factory(Cluster::class)->create();
-        $cluster5 = factory(Cluster::class)->create();
+        $town1 = factory(Town::class)->create();
+        $town2 = factory(Town::class)->create();
+        $cluster1 = factory(Cluster::class)->create(['town_id' => $town1->id]);
+        $cluster2 = factory(Cluster::class)->create(['town_id' => $town1->id]);
+        $cluster3 = factory(Cluster::class)->create(['town_id' => $town2->id]);
+        $cluster4 = factory(Cluster::class)->create(['town_id' => $town2->id]);
+        $cluster5 = factory(Cluster::class)->create(['town_id' => $town2->id]);
         $election_results = $this->app->make(ElectionResultRepository::class)->skipPresenter();
         $election_results->createElectionResult(100, $candidate1, $cluster1);
         $election_results->createElectionResult(200, $candidate1, $cluster2);
@@ -155,6 +159,13 @@ class ElectionResultTest extends TestCase
         $this->assertCount(5, $election_results->all());
         $this->assertEquals(600, $election_results->getByCriteria(new CandidateCriterion('marcos'))->sum('votes'));
         $this->assertEquals(900, $election_results->getByCriteria(new CandidateCriterion('robredo'))->sum('votes'));
+        $this->assertEquals(1200, $election_results->getByCriteria(new TownCriterion($town2->name))->sum('votes'));
+        $this->assertEquals(
+            1200,
+            $election_results
+                ->getByCriteria(new TownCriterion($town2->name))
+                ->getByCriteria(new CandidateCriterion('robredo'))->sum('votes')
+        );
         $this->assertEquals(1500, $election_results->all()->sum('votes'));
     }
 }
