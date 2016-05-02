@@ -2,6 +2,7 @@
 
 use App\Repositories\ElectionResultRepository;
 use App\Repositories\CandidateRepository;
+use App\Criteria\CandidateCriterion;
 use App\Entities\ElectionResult;
 use App\Entities\Candidate;
 use App\Entities\Cluster;
@@ -126,5 +127,34 @@ class ElectionResultTest extends TestCase
 
         $this->app->make(ElectionResultRepository::class)->skipPresenter()->createElectionResult(102, $candidate, $cluster);
         $this->assertCount(1, $election_result->all());
+    }
+
+    /** @test */
+    function election_results_can_be_summed_per_candidate()
+    {
+        $candidate1 = $this->app->make(CandidateRepository::class)->skipPresenter()->create([
+            'name'  => "Ferndinand Marcos Jr.",
+            'alias' => "MARCOS"
+        ]);
+        $candidate2 = $this->app->make(CandidateRepository::class)->skipPresenter()->create([
+            'name'  => "Leni Robredo",
+            'alias' => "ROBREDO"
+        ]);
+        $cluster1 = factory(Cluster::class)->create();
+        $cluster2 = factory(Cluster::class)->create();
+        $cluster3 = factory(Cluster::class)->create();
+        $cluster4 = factory(Cluster::class)->create();
+        $cluster5 = factory(Cluster::class)->create();
+        $election_results = $this->app->make(ElectionResultRepository::class)->skipPresenter();
+        $election_results->createElectionResult(100, $candidate1, $cluster1);
+        $election_results->createElectionResult(200, $candidate1, $cluster2);
+        $election_results->createElectionResult(300, $candidate1, $cluster3);
+        $election_results->createElectionResult(400, $candidate2, $cluster4);
+        $election_results->createElectionResult(500, $candidate2, $cluster5);
+
+        $this->assertCount(5, $election_results->all());
+        $this->assertEquals(600, $election_results->getByCriteria(new CandidateCriterion('marcos'))->sum('votes'));
+        $this->assertEquals(900, $election_results->getByCriteria(new CandidateCriterion('robredo'))->sum('votes'));
+        $this->assertEquals(1500, $election_results->all()->sum('votes'));
     }
 }

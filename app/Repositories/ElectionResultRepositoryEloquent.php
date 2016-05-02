@@ -57,6 +57,14 @@ class ElectionResultRepositoryEloquent extends BaseRepository implements Electio
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
+    /**
+     * Overrides the validator, instead of $attributes
+     * the validator validates the $values
+     *
+     * @param array $attributes
+     * @param array $values
+     * @return mixed
+     */
     public function updateOrCreate(array $attributes, array $values = [])
     {
         $this->applyScope();

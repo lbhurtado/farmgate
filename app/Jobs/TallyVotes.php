@@ -7,10 +7,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Repositories\ElectionResultRepository;
-use App\Repositories\ClusterRepository;
 use App\Repositories\CandidateRepository;
-use App\Entities\Candidate;
-use App\Entities\Cluster;
 use App\Instruction;
 
 class TallyVotes extends Job implements ShouldQueue
@@ -24,7 +21,7 @@ class TallyVotes extends Job implements ShouldQueue
         $this->instruction = $instruction;
     }
 
-    protected function getCluster()
+    protected function getClusterFromInstructionFromMessage()
     {
         if (!$this->instruction->getShortMessage()->contact)
             return null;
@@ -38,15 +35,18 @@ class TallyVotes extends Job implements ShouldQueue
      */
     public function handle(ElectionResultRepository $election_results, CandidateRepository $candidates)
     {
-        if (preg_match_all("/(?<candidate>\w+)\s(?<votes>\d+)/", $this->instruction->getArguments(), $matches))
+        $text = $this->instruction->getArguments();
+        if (preg_match_all("/(?<candidate>\w+)\s(?<votes>\d+)/", $text , $matches))
         {
-            $results = array_combine($matches['candidate'], $matches['votes']);
-            foreach($results as $alias => $votes)
+            $poll_results = array_combine($matches['candidate'], $matches['votes']);
+            foreach($poll_results as $alias => $votes)
             {
                 $candidate = $candidates->findByAlias($alias);
-                $cluster = $this->getCluster();
+                $cluster = $this->getClusterFromInstructionFromMessage();
                 if ($cluster && $candidate)
+                {
                     $election_results->createElectionResult($votes, $candidate, $cluster);
+                }
             }
         }
     }
