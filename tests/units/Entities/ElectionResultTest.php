@@ -22,13 +22,26 @@ class ElectionResultTest extends TestCase
     }
 
     /** @test */
-    function election_results_votes_field_has_a_maximum_value()
+    function election_results_votes_field_has_a_maximum_value_upon_creation()
     {
         $this->setExpectedException(Prettus\Validator\Exceptions\ValidatorException::class);
 
         $this->app->make(ElectionResultRepository::class)->create([
             'votes' => 1002
         ]);
+    }
+
+    /** @test */
+    function election_results_votes_field_has_a_maximum_value_upon_update()
+    {
+        $this->setExpectedException(Prettus\Validator\Exceptions\ValidatorException::class);
+
+        $election_results = $this->app->make(ElectionResultRepository::class)->skipPresenter();
+        $election_result = $election_results->create([
+            'votes' => 100
+        ]);
+
+        $election_results->update(['votes' => 1002], $election_result->id);
     }
 
     /** @test */
@@ -59,7 +72,7 @@ class ElectionResultTest extends TestCase
         $cluster = factory(Cluster::class)->create();
         $election_result =
             $this->app->make(ElectionResultRepository::class)->skipPresenter()
-                ->createElectionResult(['votes' => 100], $candidate, $cluster);
+                ->createElectionResult(100, $candidate, $cluster);
 
         $this->assertEquals($candidate->name, $election_result->candidate->name);
         $this->assertEquals($cluster->name, $election_result->cluster->name);
@@ -78,7 +91,7 @@ class ElectionResultTest extends TestCase
             'alias' => "MARCOS"
         ]);
         $cluster = factory(Cluster::class)->create();
-        $result = $this->app->make(ElectionResultRepository::class)->skipPresenter()->createElectionResult(['votes' => 100], $candidate, $cluster);
+        $result = $this->app->make(ElectionResultRepository::class)->skipPresenter()->createElectionResult(100, $candidate, $cluster);
 
         $election_results = App::make(ElectionResultRepository::class);
         $arr = $election_results->find(1);
@@ -97,5 +110,21 @@ class ElectionResultTest extends TestCase
 
         $this->assertCount(10, $election_results->all());
         $this->assertEquals(5000, $election_results->all()->sum('votes'));
+    }
+
+    /** @test */
+    function election_results_is_unique_per_candidate_per_cluster()
+    {
+        $candidate = $this->app->make(CandidateRepository::class)->skipPresenter()->create([
+            'name'  => "Ferndinand Marcos Jr.",
+            'alias' => "MARCOS"
+        ]);
+        $cluster = factory(Cluster::class)->create();
+        $election_result = $this->app->make(ElectionResultRepository::class)->skipPresenter()->createElectionResult(100, $candidate, $cluster);
+
+        $this->assertCount(1, $election_result->all());
+
+        $this->app->make(ElectionResultRepository::class)->skipPresenter()->createElectionResult(102, $candidate, $cluster);
+        $this->assertCount(1, $election_result->all());
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 use App\Presenters\ElectionResultPresenter;
+use Prettus\Repository\Events\RepositoryEntityUpdated;
+use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Repositories\ElectionResultRepository;
@@ -55,24 +57,55 @@ class ElectionResultRepositoryEloquent extends BaseRepository implements Electio
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
+    public function updateOrCreate(array $attributes, array $values = [])
+    {
+        $this->applyScope();
+
+        if (!is_null($this->validator)) {
+            $this->validator->with($values)->passesOrFail(ValidatorInterface::RULE_UPDATE);
+        }
+
+        $temporarySkipPresenter = $this->skipPresenter;
+
+        $this->skipPresenter(true);
+
+        $model = $this->model->updateOrCreate($attributes, $values);
+
+        $this->skipPresenter($temporarySkipPresenter);
+        $this->resetModel();
+
+        event(new RepositoryEntityUpdated($this, $model));
+
+        return $this->parserResult($model);
+    }
+
     /**
      * Custom create for Election Result
      *
-     * @param $attributes
+     * @param $votes
      * @param Candidate $candidate
      * @param Cluster $cluster
      * @return mixed
      */
-    public function createElectionResult($attributes, Candidate $candidate, Cluster $cluster)
+    public function createElectionResult($votes, Candidate $candidate, Cluster $cluster)
     {
         $temporarySkipPresenter = $this->skipPresenter;
         $this->skipPresenter(true);
-        $model = parent::create($attributes);
-        $model->candidate()->associate($candidate);
-        $model->cluster()->associate($cluster);
-        $model->save();
+        $candidate_id = $candidate->id;
+        $cluster_id = $cluster->id;
+        try
+        {
+            $model = $this->updateOrCreate(compact('candidate_id', 'cluster_id'), compact('votes'));
+            $model->candidate()->associate($candidate);
+            $model->cluster()->associate($cluster);
+            $model->save();
+        }
+        catch (\Prettus\Validator\Exceptions\ValidatorException $e)
+        {
+            $model = null;
+        }
         $this->skipPresenter($temporarySkipPresenter);
-        
+
         return $model;
     }
 

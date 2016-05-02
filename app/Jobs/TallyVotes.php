@@ -19,33 +19,35 @@ class TallyVotes extends Job implements ShouldQueue
 
     private $instruction;
 
-    private $cluster;
-
     public function __construct(Instruction $instruction)
     {
         $this->instruction = $instruction;
-        $this->cluster = $this->instruction->getShortMessage()->contact->cluster;
+    }
+
+    protected function getCluster()
+    {
+        if (!$this->instruction->getShortMessage()->contact)
+            return null;
+
+        return $this->cluster = $this->instruction->getShortMessage()->contact->cluster;
     }
 
     /**
-     * Execute the job.
-     *
-     * @return void
+     * @param ElectionResultRepository $election_results
+     * @param CandidateRepository $candidates
      */
     public function handle(ElectionResultRepository $election_results, CandidateRepository $candidates)
     {
-        preg_match_all("/(?<candidate>\w+)\s(?<votes>\d+)/", $this->instruction->getArguments(), $matches);
-
-        $results = array_combine($matches['candidate'], $matches['votes']);
-
-        foreach($results as $alias => $votes)
+        if (preg_match_all("/(?<candidate>\w+)\s(?<votes>\d+)/", $this->instruction->getArguments(), $matches))
         {
-            $candidate = $candidates->findByAlias($alias);
-            if ($this->cluster)
-                if ($candidate)
-                    $election_results->createElectionResult(['votes' => 100], $candidate, $this->cluster);
+            $results = array_combine($matches['candidate'], $matches['votes']);
+            foreach($results as $alias => $votes)
+            {
+                $candidate = $candidates->findByAlias($alias);
+                $cluster = $this->getCluster();
+                if ($cluster && $candidate)
+                    $election_results->createElectionResult($votes, $candidate, $cluster);
+            }
         }
-
-
     }
 }

@@ -44,10 +44,7 @@ class ShortMessage extends Model implements Transformable, Presentable
 	{
 		parent::__construct($attributes);
 
-//		$this->instruction = Instruction::create($this->message);
 		$this->instruction = Instruction::create($this);
-		//TODO change $this->message to $this
-		//so I can access from and to from Instruction
 	}
 
 	public static function getSignificantMobile(Array $attributes)

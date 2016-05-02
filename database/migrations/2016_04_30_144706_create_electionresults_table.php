@@ -21,6 +21,7 @@ class CreateElectionresultsTable extends Migration
 			$table->foreign('candidate_id')->references('id')->on('candidates')->onDelete('cascade');
 			$table->integer('votes')->unsigned();
             $table->timestamps();
+			$table->unique(['cluster_id', 'candidate_id']);
 		});
 	}
 

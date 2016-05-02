@@ -6,8 +6,8 @@ use App\Entities\ShortMessage;
 class Instruction
 {
     public static $keywords = [
-        'txt reg',
-        'txt poll',
+        'REGISTRATION' => 'txt reg',
+        'POLL' => 'txt poll',
     ];
 
     protected $short_message;
@@ -30,7 +30,7 @@ class Instruction
 
         if ($this->message)
         {
-            $keywords = implode('|', static::$keywords);
+            $keywords = implode('|', array_values(static::$keywords));
 
             if (preg_match("/^(?<keyword>$keywords)\s(?<arguments>.*)$/i", $this->message, $matches))
             {

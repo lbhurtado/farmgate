@@ -2,69 +2,93 @@
 
 use App\Repositories\ElectionResultRepository;
 use Illuminate\Foundation\Bus\DispatchesJobs;
+use App\Repositories\ShortMessageRepository;
 use App\Repositories\CandidateRepository;
 use App\Repositories\TokenRepository;
+use App\Criteria\CandidateCriterion;
 use App\Entities\ShortMessage;
 use App\Entities\Candidate;
+use App\Entities\Contact;
 use App\Entities\Cluster;
 use App\Jobs\TallyVotes;
+use App\Instruction;
+use App\Mobile;
 
 class TallyVotesTest extends TestCase
 {
     use DatabaseMigrationsWithSeeding, DispatchesJobs;
 
+    private $election_results;
+
+    private $tokens;
+
+    private $poll_keyword;
+
+    function setUp()
+    {
+        parent::setUp();
+
+        $this->election_results = $this->app->make(ElectionResultRepository::class)->skipPresenter();
+        $this->tokens = $this->app->make(TokenRepository::class)->skipPresenter();
+        $this->poll_keyword = strtoupper(Instruction::$keywords['POLL']);
+    }
     /** @test */
     function short_message_with_proper_syntax_dispatches_tally_votes_job()
     {
         $this->expectsJobs(TallyVotes::class);
 
         factory(ShortMessage::class)->create([
-            'message' => "TXT POLL MARCOS 777 ROBREDO 222",
+            'message' => $this->poll_keyword . " " . "MARCOS 777 ROBREDO 222",
         ]);
     }
 
     /** @test */
     function tally_votes_does_the_job()
     {
-        $election_results = $this->app->make(ElectionResultRepository::class)->skipPresenter();
-
-        $cluster = factory(Cluster::class)->create();
-
-        $claim_code = 'ABC1234';
-        $tokens = $this->app->make(TokenRepository::class)->skipPresenter();
-
-        $tokens->create([
-            'code'       => $claim_code,
-            'class'      => Cluster::class,
-            'reference'  => $cluster->id
-        ]);
-        $message1 = factory(ShortMessage::class)->create(['message' => $claim_code]);
-
-        $this->assertEquals($cluster->name, $message1->contact->cluster->name);
-        $this->assertCount(0, $election_results->all());
-
-        $message2 = factory(ShortMessage::class)->create([
-            'from' => $message1->from,
-            'message' => "txt poll marcos 777 ROBREDO 222 ESCUDERO 1"
-        ]);
-
-        $this->assertEquals($cluster->name, $message2->contact->cluster->name);
-        $this->assertEquals("TXT POLL", $message2->getInstruction()->getKeyword());
-
-        $this->app->make(CandidateRepository::class)->create([
+        factory(Candidate::class)->create([
             'name'  => "Ferndinand Marcos Jr.",
             'alias' => "MARCOS"
         ]);
 
-        $this->app->make(CandidateRepository::class)->create([
+        factory(Candidate::class)->create([
             'name'  => "Leni Robredo",
             'alias' => "ROBREDO"
         ]);
 
+        $cluster1 = factory(Cluster::class)->create();
+        $token_code1 = 'ABC1234';
+        $this->tokens->create([
+            'code'       => $token_code1,
+            'class'      => Cluster::class,
+            'reference'  => $cluster1->id
+        ]);
+        $message1 = factory(ShortMessage::class)->create([
+            'message' => $token_code1
+        ]);
+
+        $this->assertCount(0, $this->election_results->all());
+
+        $mobile1 = $message1->from;
+        $message2 = factory(ShortMessage::class)->create([
+            'from' => $mobile1,
+            'message' => $this->poll_keyword . " " . "marcos 777 ROBREDO 222 ESCUDERO 1"
+        ]);
+
+        $this->assertEquals($this->poll_keyword, $message2->getInstruction()->getKeyword());
+
         $job = new TallyVotes($message2->getInstruction());
         $this->dispatch($job);
 
-        $this->assertCount(2, $election_results->all());
+        $this->assertCount(2, $this->election_results->all());
+        $this->assertEquals(777, $this->election_results->getByCriteria(new CandidateCriterion('marcos'))->sum('votes'));
+        $this->assertEquals(222, $this->election_results->getByCriteria(new CandidateCriterion('robredo'))->sum('votes'));
 
+        $message3 = factory(ShortMessage::class)->create([
+            'from' => $mobile1,
+            'message' => $this->poll_keyword . " " . "marcos 778 ROBREDO 2230 ESCUDERO 1"
+        ]);
+        $this->assertCount(2, $this->election_results->all());
+        $this->assertEquals(778, $this->election_results->getByCriteria(new CandidateCriterion('marcos'))->sum('votes'));
+        $this->assertEquals(222, $this->election_results->getByCriteria(new CandidateCriterion('robredo'))->sum('votes'));
     }
 }
