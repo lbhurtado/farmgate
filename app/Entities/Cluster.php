@@ -5,7 +5,6 @@ namespace App\Entities;
 use Prettus\Repository\Traits\TransformableTrait;
 use Prettus\Repository\Contracts\Transformable;
 use Illuminate\Database\Eloquent\Model;
-use App\Entities\Contact;
 
 class Cluster extends Model implements Transformable
 {
@@ -28,5 +27,10 @@ class Cluster extends Model implements Transformable
 	public function contacts()
 	{
 		return $this->belongsTo(Contact::class, 'contact_id');
+	}
+
+	public function town()
+	{
+		return $this->belongsTo(Town::class);
 	}
 }

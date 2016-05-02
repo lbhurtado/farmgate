@@ -48,6 +48,9 @@ $factory->define(App\Entities\Cluster::class, function (Faker\Generator $faker) 
         'name' => $faker->company . $faker->numberBetween(1,9999),
         'precincts' => str_pad($faker->numberBetween(1,99), 3, STR_PAD_LEFT) . $faker->randomElement(["A", "B", "C", "D", "E"]),
         'registered_voters' =>  rand(100, 1000),
+        'town_id' => function () {
+            return factory(App\Entities\Town::class)->create()->id;
+        }
     ];
 });
 
@@ -65,5 +68,11 @@ $factory->define(App\Entities\ElectionResult::class, function (Faker\Generator $
         'votes' => $faker->numberBetween(500,800),
         'candidate_id' => $candidate->id,
         'cluster_id' => $cluster->id,
+    ];
+});
+
+$factory->define(App\Entities\Town::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->city,
     ];
 });

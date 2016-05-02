@@ -2,6 +2,7 @@
 
 use App\Repositories\ClusterRepository;
 use App\Entities\Cluster;
+use App\Entities\Town;
 
 class ClusterTest extends TestCase
 {
@@ -143,6 +144,22 @@ class ClusterTest extends TestCase
             'name' => "Cluster 1",
             'precincts' => '1A, 2A, 3A, 4K',
             'registered_voters' => 800
+        ]);
+    }
+
+    /** @test */
+    function cluster_is_in_a_town()
+    {
+        $town = factory(Town::class)->create();
+        $cluster = factory(Cluster::class)->create();
+
+        $cluster->town()->associate($town);
+        $cluster->save();
+
+        $this->assertEquals($town->name, $cluster->town->find($town->id)->name);
+        $this->seeInDatabase($cluster->getTable(),[
+            'name' => $cluster->name,
+            'town_id' => $town->id
         ]);
     }
 }

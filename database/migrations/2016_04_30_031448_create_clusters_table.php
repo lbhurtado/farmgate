@@ -20,6 +20,8 @@ class CreateClustersTable extends Migration
 			$table->integer('registered_voters');
 			$table->integer('contact_id')->unsigned()->nullable();
 			$table->foreign('contact_id')->references('id')->on('contacts')->onDelete('set null');
+			$table->integer('town_id')->unsigned()->nullable();
+			$table->foreign('town_id')->references('id')->on('towns')->onDelete('set null');
             $table->timestamps();
 		});
 	}
