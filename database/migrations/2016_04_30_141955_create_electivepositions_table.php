@@ -16,6 +16,7 @@ class CreateElectivepositionsTable extends Migration
 		Schema::create('elective_positions', function(Blueprint $table) {
             $table->increments('id');
 			$table->string('name')->unique();
+			$table->integer('tag')->unsigned()->index();
             $table->timestamps();
 		});
 	}

@@ -9,10 +9,12 @@ class ElectivePositionValidator extends LaravelValidator {
 
     protected $rules = [
         ValidatorInterface::RULE_CREATE => [
-		'name'	=>'	required',
+            'name'	=> 'required',
+            'tag'   => 'required|integer|min:0'
 	],
         ValidatorInterface::RULE_UPDATE => [
-		'name'	=>'	required',
+		    'name'	=> 'required',
+            'tag'   => 'required|integer|min:0'
 	],
    ];
 

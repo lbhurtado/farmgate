@@ -22,9 +22,8 @@ class ElectivePositionTransformer extends TransformerAbstract
     {
         return [
             'id'         => (int) $model->id,
-
-            /* place your other model properties here */
-
+            'name'       => $model->name,
+            'tag'        => $model->tag,
             'created_at' => $model->created_at,
             'updated_at' => $model->updated_at
         ];

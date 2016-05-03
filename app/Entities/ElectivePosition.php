@@ -12,6 +12,10 @@ class ElectivePosition extends Model implements Transformable
 
     protected $fillable = [
 		'name',
+        'tag'
 	];
 
+    protected $casts = [
+        'tag' => 'integer'
+    ];
 }

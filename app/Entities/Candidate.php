@@ -2,10 +2,11 @@
 
 namespace App\Entities;
 
-use Illuminate\Database\Eloquent\Model;
-use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
+use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\PresentableTrait;
+use Illuminate\Database\Eloquent\Model;
+use App\Entities\ElectivePosition;
 
 class Candidate extends Model implements Transformable
 {
@@ -19,5 +20,10 @@ class Candidate extends Model implements Transformable
 	function setAliasAttribute($value)
 	{
 		$this->attributes['alias'] = strtoupper($value);
+	}
+
+	function elective_position()
+	{
+		return $this->belongsTo(ElectivePosition::class);
 	}
 }

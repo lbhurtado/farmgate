@@ -96,3 +96,10 @@ $factory->define(App\Entities\PollingPlace::class, function (Faker\Generator $fa
         },
     ];
 });
+
+$factory->define(App\Entities\ElectivePosition::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->word,
+        'tag'  => $faker->numberBetween(1,7)
+    ];
+});
