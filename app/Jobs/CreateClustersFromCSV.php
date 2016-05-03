@@ -14,13 +14,16 @@ class CreateClustersFromCSV extends Job implements ShouldQueue
 
     private $reader;
 
-    public function __construct($path)
+    private $records;
+
+    public function __construct($path, $records = 100000)
     {
         $this->reader = Reader::createFromPath($path);
         $this->reader->setDelimiter(',');
         $this->reader->setEnclosure('"');
         $this->reader->setEscape('\\');
         $this->reader->setEncodingFrom('iso-8859-15');
+        $this->records = $records;
     }
 
     /**
@@ -30,7 +33,6 @@ class CreateClustersFromCSV extends Job implements ShouldQueue
      */
     public function handle()
     {
-        echo "\n";
         foreach ($this->reader as $index => $row) {
             if ($row[0] && $row[1] && $row[2]  && $row[3] && $row[4] && $row[5])
             {
@@ -44,6 +46,7 @@ class CreateClustersFromCSV extends Job implements ShouldQueue
                 $job = new CreateCluster($town, $barangay, $polling_place, $precincts, $cluster, $registered_voters);
                 $this->dispatch($job);
             }
+            if ($index == $this->records-1) break;
         }
     }
 }

@@ -15,11 +15,13 @@ class CreateClustersFromCSVTest extends TestCase
     {
         $path = storage_path('app/public/pop.csv');
 
-//        $job = new CreateClustersFromCSV($path);
-//        $this->dispatch($job);
-//
-//        $clusters = $this->app->make(ClusterRepository::class);
-//
+        $job = new CreateClustersFromCSV($path, 5);
+        $this->dispatch($job);
+
+        $clusters = $this->app->make(ClusterRepository::class)->skipPresenter();
+
+        $this->assertCount(5, $clusters->all());
+
 //        $towns = $this->app->make(TownRepository::class);
 //
 //        var_dump(array_pluck($towns->all()['data'], 'name'));
