@@ -13,9 +13,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(ElectivePositionsTableSeeder::class);
         $this->call(CandidatesTableSeeder::class);
-//        $this->call(ClustersTableSeeder::class);
+        $this->call(ClustersTableSeeder::class);
         $this->call(GroupsTableSeeder::class);
-//        $this->call(TokensTableSeeder::class);
+        $this->call(TokensTableSeeder::class);
 
     }
 }

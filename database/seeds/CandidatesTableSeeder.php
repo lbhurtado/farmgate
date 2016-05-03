@@ -15,10 +15,7 @@ class CandidatesTableSeeder extends Seeder
     {
         DB::table('candidates')->delete();
 
-        $reader = Reader::createFromPath(storage_path('app/public/candidate.csv'));
-        $reader->setDelimiter(',');
-        $reader->setEnclosure('"');
-        $reader->setEscape('\\');
+        $reader = Reader::createFromPath(database_path('candidates.csv'));
 
         $elective_positions = \App::make(ElectivePositionRepository::class)->skipPresenter();
         $candidates = [];

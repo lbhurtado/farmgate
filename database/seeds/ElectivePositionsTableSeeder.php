@@ -14,7 +14,7 @@ class ElectivePositionsTableSeeder extends Seeder
     {
         DB::table('elective_positions')->delete();
 
-        $reader = Reader::createFromPath(storage_path('app/public/elective_position.csv'));
+        $reader = Reader::createFromPath(database_path('elective_positions.csv'));
 
         $elective_positions = [];
         foreach ($reader as $index => $row)

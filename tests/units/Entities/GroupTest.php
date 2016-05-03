@@ -1,11 +1,12 @@
 <?php
 
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\Repositories\GroupRepository;
 use App\Entities\Group;
 
 class GroupTest extends TestCase
 {
-    use DatabaseMigrationsWithSeeding;
+    use DatabaseMigrations;
 
     /** @test */
     function group_has_name()
@@ -80,10 +81,11 @@ class GroupTest extends TestCase
     }
 
     /** @test */
-    function there_are_default_groups()
+    function seed_groups()
     {
-        $groups = $this->app->make(GroupRepository::class)->skipPresenter();
+        $this->artisan('db:seed');
 
-        $this->assertTrue(count($groups->all()) > 0);
+        $this->seeInDatabase('groups', ['name' => "Legal"]);
+        $this->seeInDatabase('groups', ['name' => "Security"]);
     }
 }
