@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use League\Csv\Reader;
 
 class ElectivePositionsTableSeeder extends Seeder
 {
@@ -13,12 +14,17 @@ class ElectivePositionsTableSeeder extends Seeder
     {
         DB::table('elective_positions')->delete();
 
-        DB::table('elective_positions')->insert(['name' => 'President',         'tag' => 1]);
-        DB::table('elective_positions')->insert(['name' => 'Vice-President',    'tag' => 2]);
-        DB::table('elective_positions')->insert(['name' => 'Governor',          'tag' => 3]);
-        DB::table('elective_positions')->insert(['name' => 'Vice-Governor',     'tag' => 4]);
-        DB::table('elective_positions')->insert(['name' => 'Congressman',       'tag' => 5]);
-        DB::table('elective_positions')->insert(['name' => 'Mayor',             'tag' => 6]);
-        DB::table('elective_positions')->insert(['name' => 'Vice-Mayor',        'tag' => 7]);
+        $reader = Reader::createFromPath(storage_path('app/public/elective_position.csv'));
+
+        $elective_positions = [];
+        foreach ($reader as $index => $row)
+        {
+            $elective_positions [] = array(
+                'name' => $row[0],
+                'tag' => (int) trim($row[1])
+            );
+        }
+
+        DB::table('elective_positions')->insert($elective_positions);
     }
 }

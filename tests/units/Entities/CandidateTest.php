@@ -61,23 +61,20 @@ class CandidateTest extends TestCase
     {
         $this->artisan('db:seed');
 
-        $candidate = $this->app->make(CandidateRepository::class)->skipPresenter()->create([
-            'name'  => "Ferndinand Marcos Jr.",
-            'alias' => "MARCOS"
-        ]);
+        $candidate = $this->app->make(CandidateRepository::class)->skipPresenter()->findByField('alias', "MARCOS")->first();
 
         $elective_position = $this->app->make(ElectivePositionRepository::class)->skipPresenter()->findByField('name', 'Vice-President')->first();
         $candidate->elective_position()->associate($elective_position)->save();
 
+        $this->assertEquals('Bong-bong Marcos', $candidate->name);
         $this->assertEquals('Vice-President', $candidate->elective_position->name);
-
     }
 
     /** @test */
     function seed_candidates()
     {
         $this->artisan('db:seed');
-        
+
         $this->seeInDatabase('candidates', ['name' => "Rody Duterte",    'alias' => "DUTERTE"]);
         $this->seeInDatabase('candidates', ['name' => "Jojo Binay",      'alias' => "BINAY"]);
         $this->seeInDatabase('candidates', ['name' => "Grace Poe",       'alias' => "POE"]);

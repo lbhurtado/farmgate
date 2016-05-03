@@ -12,15 +12,17 @@ class ElectivePositionTest extends TestCase
     function elective_position_has_a_name_and_tag()
     {
         $elective_position = $this->app->make(ElectivePositionRepository::class)->skipPresenter()->create([
-            'name' => "President",
-            'tag' => 1
+            'name' => "Councilor of Malabon",
+            'tag' => 8
         ]);
 
         $this->assertInstanceOf(ElectivePosition::class, $elective_position);
-        $this->assertEquals('President', $elective_position->name);
+        $this->assertEquals('Councilor of Malabon', $elective_position->name);
+        $this->assertEquals(8 , $elective_position->tag);
+        $this->assertEquals('Councilor of Malabon', $elective_position->name);
         $this->seeInDatabase($elective_position->getTable(), [
-            'name' => "President",
-            'tag' => 1
+            'name' => "Councilor of Malabon",
+            'tag' => 8
         ]);
     }
 
@@ -28,12 +30,18 @@ class ElectivePositionTest extends TestCase
     function seed_elective_positions()
     {
         $this->artisan('db:seed');
-        $this->seeInDatabase('elective_positions', ['name' => "President", 'tag' => 1]);
-        $this->seeInDatabase('elective_positions', ['name' => 'Vice-President',    'tag' => 2]);
-        $this->seeInDatabase('elective_positions', ['name' => 'Governor',          'tag' => 3]);
-        $this->seeInDatabase('elective_positions', ['name' => 'Vice-Governor',     'tag' => 4]);
-        $this->seeInDatabase('elective_positions', ['name' => 'Congressman',       'tag' => 5]);
-        $this->seeInDatabase('elective_positions', ['name' => 'Mayor',             'tag' => 6]);
-        $this->seeInDatabase('elective_positions', ['name' => 'Vice-Mayor',        'tag' => 7]);
+        $this->seeInDatabase('elective_positions', ['name' => "President",                  'tag' => 1]);
+        $this->seeInDatabase('elective_positions', ['name' => 'Vice-President',             'tag' => 2]);
+        $this->seeInDatabase('elective_positions', ['name' => 'Governor of Cavite',         'tag' => 3]);
+        $this->seeInDatabase('elective_positions', ['name' => 'Vice-Governor of Cavite',    'tag' => 4]);
+        $this->seeInDatabase('elective_positions', ['name' => 'Congressman',                'tag' => 5]);
+        $this->seeInDatabase('elective_positions', ['name' => 'Mayor of Alfonso',           'tag' => 6]);
+        $this->seeInDatabase('elective_positions', ['name' => 'Vice-Mayor of Alfonso',      'tag' => 7]);
+        $this->seeInDatabase('elective_positions', ['name' => 'Mayor of Amadeo',            'tag' => 6]);
+        $this->seeInDatabase('elective_positions', ['name' => 'Vice-Mayor of Amadeo',       'tag' => 7]);
+        $this->seeInDatabase('elective_positions', ['name' => 'Mayor of Bacoor',            'tag' => 6]);
+        $this->seeInDatabase('elective_positions', ['name' => 'Vice-Mayor of Bacoor',       'tag' => 7]);
+        $this->seeInDatabase('elective_positions', ['name' => 'Mayor of Carmona',           'tag' => 6]);
+        $this->seeInDatabase('elective_positions', ['name' => 'Vice-Mayor of Carmona',      'tag' => 7]);
     }
 }
