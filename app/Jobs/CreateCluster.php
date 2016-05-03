@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Entities\Cluster;
 use App\Repositories\PollingPlaceRepository;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Repositories\BarangayRepository;
@@ -40,11 +41,10 @@ class CreateCluster extends Job implements ShouldQueue
         $this->registered_voters = $registered_voters;
     }
 
-
     /**
-     * @param ClusterRepository $clusters
      * @param PollingPlaceRepository $polling_places
      * @param BarangayRepository $barangays
+     * @param ClusterRepository $clusters
      * @param TownRepository $towns
      */
     public function handle(ClusterRepository $clusters, PollingPlaceRepository $polling_places, BarangayRepository $barangays,

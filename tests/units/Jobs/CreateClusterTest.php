@@ -31,13 +31,13 @@ class CreateClusterTest extends TestCase
         $cluster_instance = $clusters->find(1);
 
         $this->assertInstanceOf(Cluster::class, $cluster_instance);
-        $this->assertEquals($cluster, $cluster_instance->name);
-        $this->assertEquals($precincts, $cluster_instance->precincts);
+        $this->assertEquals(trim($cluster), $cluster_instance->name);
+        $this->assertEquals(trim($precincts), $cluster_instance->precincts);
         $this->assertEquals($registered_voters, $cluster_instance->registered_voters);
-        $this->assertEquals($polling_place, $cluster_instance->polling_place->name);
-        $this->assertEquals($barangay, $cluster_instance->polling_place->barangay->name);
-        $this->assertEquals($town, $cluster_instance->town->name);
-        $this->assertEquals($town, $cluster_instance->polling_place->barangay->town->name);
+        $this->assertEquals(trim($polling_place), $cluster_instance->polling_place->name);
+        $this->assertEquals(trim($barangay), $cluster_instance->polling_place->barangay->name);
+        $this->assertEquals(trim($town), $cluster_instance->town->name);
+        $this->assertEquals(trim($town), $cluster_instance->polling_place->barangay->town->name);
         $this->seeInDatabase($cluster_instance->getTable(), [
             'name' => $cluster,
             'precincts' => $precincts,
