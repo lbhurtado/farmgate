@@ -76,3 +76,15 @@ $factory->define(App\Entities\Town::class, function (Faker\Generator $faker) {
         'name' => $faker->city,
     ];
 });
+
+$factory->define(App\Entities\Barangay::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name,
+    ];
+});
+
+$factory->define(App\Entities\PollingPlace::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name,
+    ];
+});
