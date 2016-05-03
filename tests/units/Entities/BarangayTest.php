@@ -72,8 +72,7 @@ class BarangayTest extends TestCase
         $town = factory(Town::class)->create();
         $barangay = factory(Barangay::class)->create();
 
-        $barangay->town()->associate($town);
-        $barangay->save();
+        $barangay->town()->associate($town)->save();
 
         $this->assertEquals($town->name, $barangay->town->find($town->id)->name);
         $this->seeInDatabase($barangay->getTable(),[

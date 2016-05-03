@@ -33,4 +33,9 @@ class Cluster extends Model implements Transformable
 	{
 		return $this->belongsTo(Town::class);
 	}
+
+	public function polling_place()
+	{
+		return $this->belongsTo(PollingPlace::class);
+	}
 }

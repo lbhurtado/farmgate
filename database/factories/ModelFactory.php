@@ -62,12 +62,14 @@ $factory->define(App\Entities\Candidate::class, function (Faker\Generator $faker
 });
 
 $factory->define(App\Entities\ElectionResult::class, function (Faker\Generator $faker) {
-    $candidate = factory(\App\Entities\Candidate::class)->create();
-    $cluster = factory(\App\Entities\Cluster::class)->create();
     return [
         'votes' => $faker->numberBetween(500,800),
-        'candidate_id' => $candidate->id,
-        'cluster_id' => $cluster->id,
+        'candidate_id' => function () {
+            return factory(App\Entities\Candidate::class)->create()->id;
+        },
+        'cluster_id' => function () {
+            return factory(App\Entities\Cluster::class)->create()->id;
+        },
     ];
 });
 
@@ -80,11 +82,17 @@ $factory->define(App\Entities\Town::class, function (Faker\Generator $faker) {
 $factory->define(App\Entities\Barangay::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
+        'town_id' => function () {
+            return factory(App\Entities\Town::class)->create()->id;
+        },
     ];
 });
 
 $factory->define(App\Entities\PollingPlace::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
+        'barangay_id' => function () {
+            return factory(App\Entities\Barangay::class)->create()->id;
+        },
     ];
 });
