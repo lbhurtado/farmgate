@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\Repositories\ElectionResultRepository;
 use App\Repositories\CandidateRepository;
 use App\Criteria\CandidateCriterion;
@@ -11,7 +12,7 @@ use App\Entities\Town;
 
 class ElectionResultTest extends TestCase
 {
-    use DatabaseMigrationsWithSeeding;
+    use DatabaseMigrations;
 
     /** @test */
     function election_results_has_a_votes_field()

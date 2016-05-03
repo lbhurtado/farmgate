@@ -1,11 +1,12 @@
 <?php
 
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\Repositories\ElectivePositionRepository;
 use App\Entities\ElectivePosition;
 
 class ElectivePositionTest extends TestCase
 {
-    use DatabaseMigrationsWithSeeding;
+    use DatabaseMigrations;
 
     /** @test */
     function elective_position_has_a_name()

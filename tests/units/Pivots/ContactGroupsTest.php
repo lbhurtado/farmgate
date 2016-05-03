@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\Repositories\ContactRepository;
 use App\Entities\Group;

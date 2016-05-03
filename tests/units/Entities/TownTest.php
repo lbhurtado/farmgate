@@ -1,12 +1,13 @@
 <?php
 
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\Repositories\TownRepository;
 use App\Entities\Cluster;
 use App\Entities\Town;
 
 class TownTest extends TestCase
 {
-    use DatabaseMigrationsWithSeeding;
+    use DatabaseMigrations;
 
     /** @test */
     function town_has_name()

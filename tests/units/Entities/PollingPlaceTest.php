@@ -1,12 +1,13 @@
 <?php
 
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\Repositories\PollingPlaceRepository;
 use App\Entities\PollingPlace;
 use App\Entities\Barangay;
 
 class PollingPlaceTest extends TestCase
 {
-    use DatabaseMigrationsWithSeeding;
+    use DatabaseMigrations;
 
     /** @test */
     function polling_place_has_a_name()

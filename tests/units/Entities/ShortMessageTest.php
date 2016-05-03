@@ -1,17 +1,17 @@
 <?php
 
-use App\Repositories\ShortMessageRepository;
-use App\Entities\ShortMessage;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\Criteria\IncomingShortMessageCriterion;
-use App\Events\ShortMessageWasRecorded;
+use App\Repositories\ShortMessageRepository;
 use App\Jobs\CreateContactFromShortMessage;
+use App\Events\ShortMessageWasRecorded;
+use App\Entities\ShortMessage;
 use App\Entities\Contact;
-use App\Instruction;
 use App\Mobile;
 
 class ShortMessageTest extends TestCase
 {
-    use DatabaseMigrationsWithSeeding;
+    use DatabaseMigrations;
 
     /** @test */
     function short_message_has_from_to_message_and_calculated_mobile_fields()

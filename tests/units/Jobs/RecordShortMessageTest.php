@@ -1,11 +1,9 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use App\Jobs\RecordShortMessage;
 use App\Repositories\ShortMessageRepository;
+use App\Jobs\RecordShortMessage;
 use App\Entities\ShortMessage;
 
 class RecordShortMessageTest extends TestCase

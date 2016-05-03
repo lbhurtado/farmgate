@@ -41,19 +41,8 @@ class CreateClustersFromCSV extends Job implements ShouldQueue
                 $cluster = $row[1];
                 $registered_voters = $row[5];
 
-//                if ($town == 'BACOOR')
-//                {
-                    try
-                    {
-                        $job = new CreateCluster($town, $barangay, $polling_place, $precincts, $cluster, $registered_voters);
-                        $this->dispatch($job);
-                    }
-                    catch (\Exception $e)
-                    {
-//                        echo $index . " " .  implode(',', $row) . " " . "\n";
-                    }
-//                }
-
+                $job = new CreateCluster($town, $barangay, $polling_place, $precincts, $cluster, $registered_voters);
+                $this->dispatch($job);
             }
         }
     }

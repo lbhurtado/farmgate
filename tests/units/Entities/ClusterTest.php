@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\Repositories\ClusterRepository;
 use App\Entities\PollingPlace;
 use App\Entities\Cluster;
@@ -7,7 +8,7 @@ use App\Entities\Town;
 
 class ClusterTest extends TestCase
 {
-    use DatabaseMigrationsWithSeeding;
+    use DatabaseMigrations;
 
     /** @test */
     function cluster_has_name_precincts_and_registered_voters()

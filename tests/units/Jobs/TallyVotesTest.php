@@ -1,22 +1,19 @@
 <?php
 
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\Repositories\ElectionResultRepository;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use App\Repositories\ShortMessageRepository;
-use App\Repositories\CandidateRepository;
 use App\Repositories\TokenRepository;
 use App\Criteria\CandidateCriterion;
 use App\Entities\ShortMessage;
 use App\Entities\Candidate;
-use App\Entities\Contact;
 use App\Entities\Cluster;
 use App\Jobs\TallyVotes;
 use App\Instruction;
-use App\Mobile;
 
 class TallyVotesTest extends TestCase
 {
-    use DatabaseMigrationsWithSeeding, DispatchesJobs;
+    use DatabaseMigrations, DispatchesJobs;
 
     private $election_results;
 

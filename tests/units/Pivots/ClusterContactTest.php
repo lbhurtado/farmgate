@@ -1,10 +1,11 @@
 <?php
 
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\Entities\Contact;
 
 class ClusterContactTest extends TestCase
 {
-    use DatabaseMigrationsWithSeeding;
+    use DatabaseMigrations;
 
     /** @test */
     function cluster_has_a_contact()

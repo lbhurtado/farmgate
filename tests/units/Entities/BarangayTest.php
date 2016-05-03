@@ -1,12 +1,13 @@
 <?php
 
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\Repositories\BarangayRepository;
 use App\Entities\Barangay;
 use App\Entities\Town;
 
 class BarangayTest extends TestCase
 {
-    use DatabaseMigrationsWithSeeding;
+    use DatabaseMigrations;
 
     /** @test */
     function barangay_has_name()

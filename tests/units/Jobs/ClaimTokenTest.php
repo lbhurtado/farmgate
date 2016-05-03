@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use App\Repositories\ShortMessageRepository;
 use App\Jobs\CreateContactFromShortMessage;
@@ -8,7 +9,6 @@ use App\Repositories\ContactRepository;
 use App\Repositories\ClusterRepository;
 use App\Repositories\TokenRepository;
 use App\Repositories\GroupRepository;
-use App\Entities\ShortMessage;
 use App\Entities\Cluster;
 use App\Jobs\ClaimToken;
 use App\Entities\Group;
@@ -16,7 +16,7 @@ use App\Mobile;
 
 class ClaimTokenTest extends TestCase
 {
-    use DatabaseMigrationsWithSeeding, DispatchesJobs;
+    use DatabaseMigrations, DispatchesJobs;
 
     /** @test */
     function short_message_with_group_token_creation_expects_a_job()

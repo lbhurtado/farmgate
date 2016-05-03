@@ -11,6 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+//        $this->call(ClustersTableSeeder::class);
         $this->call(GroupsTableSeeder::class);
 //        $this->call(TokensTableSeeder::class);
 

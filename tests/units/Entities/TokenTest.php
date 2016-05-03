@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\Repositories\ContactRepository;
 use App\Repositories\TokenRepository;
 use App\Repositories\GroupRepository;
@@ -7,7 +8,7 @@ use App\Entities\Group;
 
 class TokenTest extends TestCase
 {
-    use DatabaseMigrationsWithSeeding;
+    use DatabaseMigrations;
 
     /** @test */
     function token_has_unique_code()

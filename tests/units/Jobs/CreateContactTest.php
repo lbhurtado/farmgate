@@ -1,11 +1,9 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use App\Jobs\CreateContact;
 use App\Repositories\ContactRepository;
+use App\Jobs\CreateContact;
 use App\Entities\Contact;
 use App\Mobile;
 

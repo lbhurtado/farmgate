@@ -1,12 +1,11 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Repositories\ShortMessageRepository;
 use App\Repositories\ContactRepository;
 use App\Entities\Contact;
-use libphonenumber\PhoneNumberFormat;
-use App\Repositories\ShortMessageRepository;
+use App\Mobile;
+
 
 class ContactTest extends TestCase
 {
@@ -98,7 +97,7 @@ class ContactTest extends TestCase
         ]);
 
         $this->assertEquals(
-            phone_format('09173011987', 'PH', PhoneNumberFormat::E164),
+            Mobile::number('09173011987'),
             $contact['data']['mobile']
         );
     }

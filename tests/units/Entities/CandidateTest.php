@@ -1,11 +1,12 @@
 <?php
 
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\Repositories\CandidateRepository;
 use App\Entities\Candidate;
 
 class CandidateTest extends TestCase
 {
-    use DatabaseMigrationsWithSeeding;
+    use DatabaseMigrations;
 
     /** @test */
     function candidate_has_a_name_and_alias()

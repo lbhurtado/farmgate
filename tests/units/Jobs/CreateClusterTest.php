@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use App\Repositories\PollingPlaceRepository;
 use App\Repositories\BarangayRepository;
@@ -10,7 +11,7 @@ use App\Entities\Cluster;
 
 class CreateClusterTest extends TestCase
 {
-    use DatabaseMigrationsWithSeeding, DispatchesJobs;
+    use DatabaseMigrations, DispatchesJobs;
 
     /** @test */
     function create_cluster_does_the_job()

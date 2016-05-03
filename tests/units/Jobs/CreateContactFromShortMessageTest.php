@@ -1,15 +1,15 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
+
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use App\Repositories\ShortMessageRepository;
-use App\Entities\ShortMessage;
 use App\Jobs\CreateContactFromShortMessage;
 use App\Repositories\ContactRepository;
-use App\Mobile;
+use App\Entities\ShortMessage;
 use App\Entities\Contact;
+use App\Mobile;
+
 
 class CreateContactFromShortMessageTest extends TestCase
 {
