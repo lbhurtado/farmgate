@@ -43,4 +43,15 @@ class ElectivePositionRepositoryEloquent extends BaseRepository implements Elect
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
+
+//    public function findByField($field, $value = null, $columns = ['*'])
+//    {
+//        $this->applyCriteria();
+//        $this->applyScope();
+//        $value = preg_replace('/\s+/', '', strtoupper($value));
+//        $model = $this->model->whereRaw("UPPER($field) = ?", [$value])->get($columns);
+//        $this->resetModel();
+//
+//        return $this->parserResult($model);
+//    }
 }

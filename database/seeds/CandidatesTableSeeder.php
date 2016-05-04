@@ -21,12 +21,20 @@ class CandidatesTableSeeder extends Seeder
         $candidates = [];
         foreach ($reader as $index => $row)
         {
-            $elective_position =  $elective_positions->findByField('name', trim($row[2]))->first();
-            $candidates [] = array(
-                'name' => $row[0],
-                'alias' => trim($row[1]),
-                'elective_position_id' => $elective_position->id
-            );
+            try
+            {
+                $elective_position =  $elective_positions->findByField('name', trim($row[2]))->first();
+                $candidates [] = array(
+                    'name' => $row[0],
+                    'alias' => trim($row[1]),
+                    'elective_position_id' => $elective_position->id
+                );
+            }
+            catch(\Exception $e)
+            {
+                echo $row[0] . "->" . $row[2] . "\n";
+            }
+
         }
 
         // Uncomment the below to run the seeder

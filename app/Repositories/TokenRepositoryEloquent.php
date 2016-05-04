@@ -49,6 +49,17 @@ class TokenRepositoryEloquent extends BaseRepository implements TokenRepository
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
+    public function findByField($field, $value = null, $columns = ['*'])
+    {
+        $this->applyCriteria();
+        $this->applyScope();
+        $value = preg_replace('/\s+/', '', strtoupper($value));
+        $model = $this->model->whereRaw("UPPER($field) = ?", [$value])->get($columns);
+        $this->resetModel();
+
+        return $this->parserResult($model);
+    }
+
     /**
      * Populates the contact_id in tokens tables
      * and soft deletes the record

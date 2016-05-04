@@ -6,8 +6,7 @@ use App\Entities\ShortMessage;
 class Instruction
 {
     public static $keywords = [
-        'REGISTRATION' => 'txt reg',
-        'POLL' => 'txt poll',
+        'POLL' => 'txtcmdr poll'
     ];
 
     protected $short_message;
@@ -19,8 +18,7 @@ class Instruction
     protected $arguments;
 
     /**
-     * Instruction constructor.
-     * @param $message
+     * @param ShortMessage $short_message
      */
     public function __construct(ShortMessage $short_message)
     {
@@ -69,6 +67,10 @@ class Instruction
         return (! is_null($this->keyword));
     }
 
+    /**
+     * @param $message
+     * @return static
+     */
     public static function create($message)
     {
         return new static($message);

@@ -2,7 +2,13 @@ President, 1
 Vice-President, 2
 Governor of Cavite, 3
 Vice-Governor of Cavite, 4
-Congressman of Tagaytay City, 5
+Congressman of First District, 5
+Congressman of Second District, 5
+Congressman of Third District, 5
+Congressman of Fourth District, 5
+Congressman of Fifth District, 5
+Congressman of Sixth District, 5
+Congressman of Seventh District, 5
 Mayor of Alfonso, 6
 Vice-Mayor of Alfonso, 7
 Mayor of Amadeo, 6
@@ -13,16 +19,16 @@ Mayor of Carmona, 6
 Vice-Mayor of Carmona, 7
 Mayor of Cavite City, 6
 Vice-Mayor of Cavite City, 7
-Mayor of City of Dasmariñas, 6
-Vice-Mayor of City of Dasmariñas, 7
+Mayor of Dasmariñas City, 6
+Vice-Mayor of Dasmariñas City, 7
 Mayor of General Emilio Aguinaldo, 6
 Vice-Mayor of General Emilio Aguinaldo, 7
-Mayor of Gen. Mariano Alvarez, 6
-Vice-Mayor of Gen. Mariano Alvarez, 7
-Mayor of General Trias, 6
-Vice-Mayor of General Trias, 7
-Mayor of Imus, 6
-Vice-Mayor of Imus, 7
+Mayor of General Mariano Alvarez, 6
+Vice-Mayor of General Mariano Alvarez, 7
+Mayor of General Trias City, 6
+Vice-Mayor of General Trias City, 7
+Mayor of Imus City, 6
+Vice-Mayor of Imus City, 7
 Mayor of Indang, 6
 Vice-Mayor of Indang, 7
 Mayor of Kawit, 6
@@ -45,5 +51,7 @@ Mayor of Tagaytay City, 6
 Vice-Mayor of Tagaytay City, 7
 Mayor of Tanza, 6
 Vice-Mayor of Tanza, 7
-Mayor of Trece Martirez City, 6
-Vice-Mayor of Trece Martirez City, 7
+Mayor of Ternate, 6
+Vice-Mayor of Ternate, 7
+Mayor of Trece Martires City, 6
+Vice-Mayor of Trece Martires City, 7

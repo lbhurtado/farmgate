@@ -19,7 +19,7 @@ class CreateCandidatesTable extends Migration
 			$table->string('alias')->unique();
 			$table->integer('elective_position_id')->unsigned()->nullable()->index();
             $table->timestamps();
-			$table->foreign('elective_position_id')->references('id')->on('elective_positions')->onDelete('cascade');
+//			$table->foreign('elective_position_id')->references('id')->on('elective_positions')->onDelete('cascade');
 		});
 	}
 

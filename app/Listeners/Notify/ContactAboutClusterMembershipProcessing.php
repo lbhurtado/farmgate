@@ -31,7 +31,12 @@ class ContactAboutClusterMembershipProcessing
 
         $mobile = $cluster->contacts->mobile;
 
-        $message = "Please proceed to " . $cluster->polling_place->name;
+        $message  = "Go to: " . strtok($cluster->polling_place->name, ",");
+        $message .= "\n" . "Precinct: " . $cluster->precincts;
+        $message .= "\n" . "Send: TXTCMDR POLL <CANDIDATE> <VOTES> <CANDIDATE> <VOTES>...";
+        $message .= "\n" . "To: (0917) 301-1987";
+
+        dd($message);
 
         SMS::queue($message, [], function($sms) use ($mobile) {
             $sms->to($mobile);
