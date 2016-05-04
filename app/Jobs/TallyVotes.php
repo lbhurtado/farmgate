@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Repositories\ElectionResultRepository;
 use App\Repositories\CandidateRepository;
 use App\Instruction;
+use App\Events\PollResultsWereProcessed;
 
 class TallyVotes extends Job implements ShouldQueue
 {
@@ -39,15 +40,23 @@ class TallyVotes extends Job implements ShouldQueue
         if (preg_match_all("/(?<candidate>\w+)\s(?<votes>\d+)/", $text , $matches))
         {
             $poll_results = array_combine($matches['candidate'], $matches['votes']);
+            $processed = [];
             foreach($poll_results as $alias => $votes)
             {
                 $candidate = $candidates->findByAlias($alias);
                 $cluster = $this->getClusterFromInstructionFromMessage();
                 if ($cluster && $candidate)
                 {
-                    $election_results->createElectionResult($votes, $candidate, $cluster);
+                    $result = $election_results->createElectionResult($votes, $candidate, $cluster);
+
+                    if (!is_null($result))
+                    {
+                        $processed[$candidate->alias] = $votes;
+                    }
                 }
             }
+
+            event(new PollResultsWereProcessed($this->instruction, $processed));
         }
     }
 }

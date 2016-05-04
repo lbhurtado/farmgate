@@ -2,9 +2,10 @@
 
 namespace App\Listeners\Notify;
 
-use App\Events\PollResultsWereProcessed;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use App\Events\PollResultsWereProcessed;
+use SimpleSoftwareIO\SMS\Facades\SMS;
 
 class ContactAboutPollResultsProcessing
 {
@@ -26,6 +27,12 @@ class ContactAboutPollResultsProcessing
      */
     public function handle(PollResultsWereProcessed $event)
     {
-        //
+        $poll_result = http_build_query($event->reesults, nullOrEmptyString(), "\n");
+        $message = "Thank you.\n" . $poll_result;
+        $mobile = $event->instruction->getShortMessage()->mobile;
+
+        SMS::queue($message, [], function($sms) use ($mobile) {
+            $sms->to($mobile);
+        });
     }
 }

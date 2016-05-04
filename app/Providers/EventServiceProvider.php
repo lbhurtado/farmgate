@@ -46,8 +46,8 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\Notify\ContactAboutTaskAccomplishmentsProcessing',
             'App\Listeners\Relay\ToOthersAboutTaskAccomplishmentsProcessing',
         ],
-        'App\Events\PollResultsWereProcessed' => [
-            'App\Listeners\Notify\ContactAboutPollResultsProcessing',
+        \App\Events\PollResultsWereProcessed::class => [
+            \App\Listeners\Notify\ContactAboutPollResultsProcessing::class,
             'App\Listeners\Relay\ToOthersAboutPollResultsProcessing',
         ],
     ];

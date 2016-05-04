@@ -2,23 +2,30 @@
 
 namespace App\Events;
 
-use App\Events\Event;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Queue\SerializesModels;
+use App\Events\Event;
+use App\Instruction;
 
 class PollResultsWereProcessed extends Event
 {
     use SerializesModels;
 
+    public $instruction;
+
+    public $results;
+
     /**
-     * Create a new event instance.
-     *
-     * @return void
+     * PollResultsWereProcessed constructor.
+     * @param Instruction $instruction
+     * @param $results
      */
-    public function __construct()
+    public function __construct(Instruction $instruction, $results)
     {
-        //
+        $this->instruction = $instruction;
+        $this->reesults = $results;
     }
+
 
     /**
      * Get the channels the event should be broadcast on.
