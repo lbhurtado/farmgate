@@ -17,7 +17,7 @@ class CreatePollingplacesTable extends Migration
             $table->increments('id');
 			$table->string('name')->index();
 			$table->integer('barangay_id')->unsigned()->nullable()->index();
-			$table->foreign('barangay_id')->references('id')->on('barangay')->onDelete('cascade');
+//			$table->foreign('barangay_id')->references('id')->on('barangay')->onDelete('cascade');
             $table->timestamps();
 			$table->unique(['name', 'barangay_id']);
 		});

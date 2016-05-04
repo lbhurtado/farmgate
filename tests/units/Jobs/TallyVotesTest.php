@@ -130,5 +130,6 @@ class TallyVotesTest extends TestCase
 
         $job = new TallyVotes($message2->getInstruction());
         $this->dispatch($job);
+
     }
 }

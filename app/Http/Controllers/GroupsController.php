@@ -140,6 +140,12 @@ class GroupsController extends Controller
     public function edit($id)
     {
 
+        Queue::push(function($job){
+
+            Log::info('Queues are pretty darn cool.');
+            $job->delete();
+        });
+
         $group = $this->repository->find($id);
 
         return view('groups.edit', compact('group'));

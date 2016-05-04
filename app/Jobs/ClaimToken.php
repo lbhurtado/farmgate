@@ -2,17 +2,11 @@
 
 namespace App\Jobs;
 
-use App\Jobs\Job;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Entities\ShortMessage;
 use App\Repositories\TokenRepository;
+use App\Entities\ShortMessage;
 
-class ClaimToken extends Job implements ShouldQueue
+class ClaimToken extends Job
 {
-    use InteractsWithQueue, SerializesModels;
-
     private $message;
 
     private $contact;

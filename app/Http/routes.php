@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::resource('groups', 'GroupsController');
+
+Route::post('sms/{from}/{to}/{message}', 'SMSController@post');

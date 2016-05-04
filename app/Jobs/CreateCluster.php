@@ -11,9 +11,9 @@ use App\Repositories\ClusterRepository;
 use Illuminate\Queue\SerializesModels;
 use App\Repositories\TownRepository;
 
-class CreateCluster extends Job implements ShouldQueue
+class CreateCluster extends Job
 {
-    use InteractsWithQueue, SerializesModels;
+//    use InteractsWithQueue, SerializesModels;
 
     private $town;
     private $barangay;

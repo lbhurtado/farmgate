@@ -3,8 +3,9 @@
 namespace App\Listeners\Notify;
 
 use App\Events\ClusterMembershipsWereProcessed;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use SimpleSoftwareIO\SMS\Facades\SMS;
 
 class ContactAboutClusterMembershipProcessing
 {
@@ -26,6 +27,14 @@ class ContactAboutClusterMembershipProcessing
      */
     public function handle(ClusterMembershipsWereProcessed $event)
     {
-        //
+        $cluster = $event->cluster;
+
+        $mobile = $cluster->contacts->mobile;
+
+        $message = "Please proceed to " . $cluster->polling_place->name;
+
+        SMS::queue($message, [], function($sms) use ($mobile) {
+            $sms->to($mobile);
+        });
     }
 }

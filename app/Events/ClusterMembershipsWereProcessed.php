@@ -10,14 +10,11 @@ class ClusterMembershipsWereProcessed extends Event
 {
     use SerializesModels;
 
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public $cluster;
+
+    public function __construct($cluster)
     {
-        //
+        $this->cluster = $cluster;
     }
 
     /**
