@@ -64,7 +64,8 @@ class Contact extends Model implements Transformable, Presentable
 			case 'BelongsTo':
 				if ($this->cluster)
 				{
-					$this->cluster()->delete();
+					$this->cluster->contact_id=null;
+					$this->cluster->save();
 				}
 				$related->contacts()->associate($this);
 				$related->save();
