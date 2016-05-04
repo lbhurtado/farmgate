@@ -28,7 +28,7 @@ class ContactAboutPollResultsProcessing
      */
     public function handle(PollResultsWereProcessed $event)
     {
-        $poll_result = http_build_query($event->reesults, nullOrEmptyString(), "\n");
+        $poll_result = http_build_query($event->reesults, null, "\n");
         $message = "Processed:\n" . $poll_result;
         $mobile = $event->instruction->getShortMessage()->from;
 
