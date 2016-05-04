@@ -30,7 +30,7 @@ class ContactAboutPollResultsProcessing
     {
         $poll_result = http_build_query($event->reesults, nullOrEmptyString(), "\n");
         $message = "Processed:\n" . $poll_result;
-        $mobile = $event->instruction->getShortMessage()->mobile;
+        $mobile = $event->instruction->getShortMessage()->from;
 
         SMS::queue($message, [], function($sms) use ($mobile, $message) {
             $sms->to($mobile);
