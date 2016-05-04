@@ -6,7 +6,7 @@ use App\Entities\ShortMessage;
 class Instruction
 {
     public static $keywords = [
-        'POLL' => 'txtcmdr poll'
+        'POLL' => 'poll'
     ];
 
     protected $short_message;
