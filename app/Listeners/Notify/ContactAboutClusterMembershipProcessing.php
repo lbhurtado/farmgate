@@ -3,6 +3,7 @@
 namespace App\Listeners\Notify;
 
 use App\Events\ClusterMembershipsWereProcessed;
+use App\Repositories\ShortMessageRepository;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use SimpleSoftwareIO\SMS\Facades\SMS;
@@ -36,10 +37,14 @@ class ContactAboutClusterMembershipProcessing
         $message .= "\n" . "Send: TXTCMDR POLL <CANDIDATE> <VOTES> <CANDIDATE> <VOTES>...";
         $message .= "\n" . "To: (0917) 301-1987";
 
-        dd($message);
-
-        SMS::queue($message, [], function($sms) use ($mobile) {
+        SMS::queue($message, [], function($sms) use ($mobile, $message) {
             $sms->to($mobile);
+            \App::make(ShortMessageRepository::class)->skipPresenter()->create([
+                'from'      => '09178251991',
+                'to'        => $mobile,
+                'message'   => $message,
+                'direction' => OUTGOING
+            ]);
         });
     }
 }

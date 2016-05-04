@@ -2,6 +2,7 @@
 
 namespace App\Listeners\Notify;
 
+use App\Repositories\ShortMessageRepository;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Events\PollResultsWereProcessed;
@@ -31,8 +32,14 @@ class ContactAboutPollResultsProcessing
         $message = "Processed:\n" . $poll_result;
         $mobile = $event->instruction->getShortMessage()->mobile;
 
-        SMS::queue($message, [], function($sms) use ($mobile) {
+        SMS::queue($message, [], function($sms) use ($mobile, $message) {
             $sms->to($mobile);
+            \App::make(ShortMessageRepository::class)->skipPresenter()->create([
+                'from'      => '09178251991',
+                'to'        => $mobile,
+                'message'   => $message,
+                'direction' => OUTGOING
+            ]);
         });
     }
 }
