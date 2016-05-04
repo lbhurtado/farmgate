@@ -29,9 +29,13 @@ class ContactAboutPollResultsProcessing
     public function handle(PollResultsWereProcessed $event)
     {
         $poll_result = http_build_query($event->reesults, null, "\n");
-        $message = "Processed:\n" . $poll_result;
-        $mobile = $event->instruction->getShortMessage()->from;
 
+        $mobile = $event->instruction->getShortMessage()->from;
+        $handle = $event->instruction->getShortMessage()->contact->handle;
+
+        $message  = ($handle != $mobile) ? "$handle:" : "";
+        $message .= "\n" . "Processed:";
+        $message .= "\n" .  $poll_result;
         SMS::queue($message, [], function($sms) use ($mobile, $message) {
             $sms->to($mobile);
             \App::make(ShortMessageRepository::class)->skipPresenter()->create([

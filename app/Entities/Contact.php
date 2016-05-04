@@ -9,6 +9,7 @@ use App\Events\ClusterMembershipsWereProcessed;
 use App\Events\GroupMembershipsWereProcessed;
 use Prettus\Repository\Contracts\Presentable;
 use Illuminate\Database\Eloquent\Model;
+use App\Repositories\ContactRepository;
 use App\Repositories\TokenRepository;
 use App\Entities\Cluster;
 use App\Mobile;
@@ -49,7 +50,7 @@ class Contact extends Model implements Transformable, Presentable
 		return $this->hasMany(ShortMessage::class, 'from', 'mobile');
 	}
 
-	public function claimToken($code)
+	public function claimToken($code, $handle = null)
 	{
 		$tokens = \App::make(TokenRepository::class)->skipPresenter();
 		$related = $tokens->claim($this, $code);
@@ -64,6 +65,12 @@ class Contact extends Model implements Transformable, Presentable
 				$related->contacts()->associate($this);
 				$related->save();
 				break;
+		}
+
+		if ($handle)
+		{
+			$this->handle = $handle;
+			$this->save();
 		}
 
 		if ($related)

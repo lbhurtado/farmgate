@@ -31,8 +31,10 @@ class ContactAboutClusterMembershipProcessing
         $cluster = $event->cluster;
 
         $mobile = $cluster->contacts->mobile;
+        $handle = $cluster->contacts->handle;
 
-        $message  = "Go to: " . strtok($cluster->polling_place->name, ",");
+        $message  = ($handle != $mobile) ? "$handle:" : "";
+        $message .= "\n" . "Go to " . strtok($cluster->polling_place->name, ",");
         $message .= "\n" . "Precinct: " . $cluster->precincts;
         $message .= "\n" . "Send: TXTCMDR POLL <CANDIDATE> <VOTES> <CANDIDATE> <VOTES>...";
         $message .= "\n" . "To: (0917) 301-1987";

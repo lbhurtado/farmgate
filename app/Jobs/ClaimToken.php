@@ -22,9 +22,10 @@ class ClaimToken extends Job
      */
     public function handle(TokenRepository $tokens)
     {
-        $token = $tokens->findByField('code', $this->message)->first();
+        preg_match("/(?<token>.*\d)\s*(?<handle>.*)/i", $this->message, $matches);
+        $token = $tokens->findByField('code', $matches['token'])->first();
         $tokenIsValid = !is_null($token);
 
-        if ($tokenIsValid) $this->contact->claimToken($token->code);
+        if ($tokenIsValid) $this->contact->claimToken($token->code, $matches['handle']);
     }
 }
