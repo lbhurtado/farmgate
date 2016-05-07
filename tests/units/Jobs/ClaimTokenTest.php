@@ -14,6 +14,8 @@ use App\Jobs\ClaimToken;
 use App\Entities\Group;
 use App\Mobile;
 
+use App\Repositories\TownRepository;
+
 class ClaimTokenTest extends TestCase
 {
     use DatabaseMigrations, DispatchesJobs;
@@ -168,5 +170,42 @@ class ClaimTokenTest extends TestCase
         $contact = $contacts->all()->first();
 
         $this->assertCount(0, $contact->groups);
+    }
+
+    /** test */
+    function claim_token_debug()
+    {
+
+        $short_message = $this->app->make(ShortMessageRepository::class)->skipPresenter()->create([
+            'from'      => '09189362340',
+            'to'        => '09173011987',
+            'message'   => 'TERNATE 1 Lester',
+            'direction' => INCOMING
+        ]);
+
+        $towns = \App::make(TownRepository::class)->skipPresenter();
+        $clusters = \App::make(ClusterRepository::class)->skipPresenter();
+
+        dd($this->getTownNumberName($towns, $short_message->message));
+//        list($town, $number, $name) = $this->getTownNumberName($towns, $short_message->message);
+
+    }
+
+    protected function getTownNumberName($towns, $input_line)
+    {
+        $this->artisan('db:seed');
+
+        $town_regex = implode('|', $towns->all()->pluck('name')->toArray()); //get alias instead
+
+        if (preg_match("/\b(?<town>$town_regex)\b[^\d]*(?<number>(?:\d+\w?|\w?\d+)).+?(?=\w)(?<name>.*?[\w\s]*)/i", $input_line, $output_array))
+        {
+            return array_only($output_array, ['town', 'number', 'name']);
+        }
+        elseif (preg_match("/(?<number>(?:\d+\w?|\w?\d+)).+?(?=\w)\b(?<town>$town_regex)\b.+?(?=\w)(?<name>.*?[\w\s]*)/i", $input_line, $output_array))
+        {
+            return array_only($output_array, ['town', 'number', 'name']);
+        }
+
+        return array(null, null, null);
     }
 }

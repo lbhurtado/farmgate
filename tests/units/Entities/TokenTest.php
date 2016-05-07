@@ -2,8 +2,12 @@
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\Repositories\ContactRepository;
+use App\Repositories\ClusterRepository;
 use App\Repositories\TokenRepository;
 use App\Repositories\GroupRepository;
+use App\Repositories\TownRepository;
+use App\Criteria\Town2Criterion;
+use App\Entities\Cluster;
 use App\Entities\Group;
 
 class TokenTest extends TestCase
@@ -137,5 +141,58 @@ class TokenTest extends TestCase
 //        );
 //
 //        $this->seeInDatabase($contact->groups()->getTable(), ['contact_id' => $contact->id, 'group_id' => $group_object->id]);
+    }
+
+    /** test */
+    function tokens_can_discern_cluster_gibberish()
+    {
+        $this->artisan('db:seed');
+
+        $input_line = "ternate 1 Lester Hurtado";
+
+        $towns = $this->app->make(TownRepository::class)->skipPresenter();
+        $clusters = $this->app->make(ClusterRepository::class)->skipPresenter();
+
+        $town_regex = implode('|', $towns->all()->pluck('name')->toArray());
+
+        if (preg_match("/\b(?<town>$town_regex)\b[^\d]*(?<number>(?:\d+\w?|\w?\d+)).+?(?=\w)(?<name>.*?[\w\s]*)/i", $input_line, $output_array))
+        {
+            extract($output_array);
+        }
+        elseif (preg_match("/(?<number>(?:\d+\w?|\w?\d+)).+?(?=\w)\b(?<town>amadeo|alfonso)\b.+?(?=\w)(?<name>.*?[\w\s]*)/i", $input_line, $output_array))
+        {
+            extract($output_array);
+        }
+
+        if (isset($town) && isset($name) && isset($number))
+        {
+            if (preg_match("/(?:(?!0[a-z])(?<precinct>(?:(?:\d{1,3}\s*[a-z])|(?:[a-z]\s*\d{1,3})))|(?<cluster>\d{1,3}))/i", $number, $output_array))
+            {
+                extract($output_array);
+            }
+
+            $town = $towns->findByField('name', strtoupper($town))->first();
+
+
+            if (isset($cluster))
+            {
+                $cluster_object = $clusters->getByCriteria(new Town2Criterion($town))->where('name', $cluster)->first();
+
+            }
+            elseif (isset($precinct))
+            {
+                $precinct = ltrim($precinct, "0");
+
+                $cluster_object = (new Cluster())->whereRaw("precincts REGEXP '[[:<:]]". $precinct ."[[:>:]]'")
+                    ->with('town')->whereHas('town', function($q) use($town) {
+                        $q->where('id',$town->id);
+                    })->first();
+            }
+
+            echo "\n" . $input_line;
+            echo "\n" . $cluster_object->town->name . " " . $cluster_object->name;
+        }
+
+
     }
 }

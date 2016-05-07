@@ -24,7 +24,6 @@ class SMSController extends Controller
     public function post($from, $to, $message)
     {
         $job = new RecordShortMessage($from, $to, $message, INCOMING);
-
         $this->dispatch($job);
 
         return compact('from', 'to', 'message');

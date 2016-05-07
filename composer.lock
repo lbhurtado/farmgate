@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7ee3700bb42d98b09b779ed4a483b88b",
-    "content-hash": "c26e226f36f90d91f4c250197750dbf9",
+    "hash": "c86b0d453dbe1bd851e1f3409f5881c6",
+    "content-hash": "578bcc242353e866b1f905b5a0d8913e",
     "packages": [
         {
             "name": "acacha/admin-lte-template-laravel",
@@ -764,17 +764,11 @@
         },
         {
             "name": "lbhurtado/simple-txtcmdr-drivers",
-            "version": "0.1.0",
+            "version": "0.1.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/lbhurtado/simple-txtcmdr-drivers.git",
-                "reference": "6e3a6dcaedcb9670c3790f70f4b2b790e20c569a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/lbhurtado/simple-txtcmdr-drivers/zipball/6e3a6dcaedcb9670c3790f70f4b2b790e20c569a",
-                "reference": "6e3a6dcaedcb9670c3790f70f4b2b790e20c569a",
-                "shasum": ""
+                "url": "/Users/lbhurtado/Projects/DevOps/Code/open-source/simple-txtcmdr-drivers",
+                "reference": "4ef793fdb4331083adf2250b1717b2f87d5883f3"
             },
             "require": {
                 "simplesoftwareio/simple-sms": "^2.1",
@@ -786,7 +780,6 @@
                     "LBHurtado\\SMS\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -803,7 +796,7 @@
                 "telerivet",
                 "txtcmdr"
             ],
-            "time": "2016-04-21 12:10:33"
+            "time": "2016-05-07 01:14:38"
         },
         {
             "name": "league/csv",

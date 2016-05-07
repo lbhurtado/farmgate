@@ -186,10 +186,19 @@ class ShortMessageTest extends TestCase
         $short_message = $this->app->make(ShortMessageRepository::class)->skipPresenter()->create([
             'from'      => '09173011987',
             'to'        => '09189362340',
-            'message'   => "txt poll POE 123 BINAY 234 DUTERTE 345 ROXAS 456",
+            'message'   => "txtcmdr poll POE 123 BINAY 234 DUTERTE 345 ROXAS 456",
             'direction' => INCOMING
         ]);
 
-        $this->assertEquals('TXT POLL', $short_message->keyword);
+        $this->assertEquals('TXTCMDR POLL', $short_message->keyword);
+
+        $short_message = $this->app->make(ShortMessageRepository::class)->skipPresenter()->create([
+            'from'      => '09173011987',
+            'to'        => '09189362340',
+            'message'   => "poll POE 123 BINAY 234 DUTERTE 345 ROXAS 456",
+            'direction' => INCOMING
+        ]);
+
+        $this->assertEquals('POLL', $short_message->keyword);
     }
 }

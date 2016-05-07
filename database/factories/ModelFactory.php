@@ -50,6 +50,9 @@ $factory->define(App\Entities\Cluster::class, function (Faker\Generator $faker) 
         'registered_voters' =>  rand(100, 1000),
         'town_id' => function () {
             return factory(App\Entities\Town::class)->create()->id;
+        },
+        'polling_place_id' => function () {
+            return factory(App\Entities\PollingPlace::class)->create()->id;
         }
     ];
 });

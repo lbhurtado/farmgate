@@ -26,4 +26,6 @@ interface TokenRepository extends RepositoryInterface
      * @return mixed
      */
     function generate(Collection $collection);
+
+    public function findByCodeInCodeAndPrecincts($field, $value = null, $columns = ['*']);
 }

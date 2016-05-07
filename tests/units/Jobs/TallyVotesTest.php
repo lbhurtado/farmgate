@@ -62,7 +62,7 @@ class TallyVotesTest extends TestCase
         ]);
         $message1 = factory(ShortMessage::class)->create([
             'from' => '09173011987',
-            'message' => $token_code1
+            'message' => "$token_code1 Lester"
         ]);
 
         $this->assertCount(0, $this->election_results->all());

@@ -16,6 +16,5 @@ class DatabaseSeeder extends Seeder
         $this->call(ClustersTableSeeder::class);
         $this->call(GroupsTableSeeder::class);
         $this->call(TokensTableSeeder::class);
-
     }
 }

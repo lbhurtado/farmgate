@@ -46,8 +46,8 @@ class ClustersTableSeeder extends Seeder
                 $job = new CreateCluster($town, $barangay, $polling_place, $precincts, $cluster, $registered_voters);
                 $this->dispatch($job);
             }
-            if (\App::environment() == 'testing')
-                if ($index == 101-1) break;
+//            if (\App::environment() == 'testing')
+//                if ($index == 101-1) break;
         }
     }
 }

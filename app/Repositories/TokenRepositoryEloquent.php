@@ -60,6 +60,20 @@ class TokenRepositoryEloquent extends BaseRepository implements TokenRepository
         return $this->parserResult($model);
     }
 
+    public function findByCodeInCodeAndPrecincts($field, $value = null, $columns = ['*'])
+    {
+        $this->applyCriteria();
+        $this->applyScope();
+        $value = preg_replace('/\s+/', '', strtoupper($value));
+        $model = $this->model
+            ->whereRaw("UPPER($field) = ?", [$value])
+            ->whereRaw("slug REGEXP '^{$slug}(-[0-9]*)?$'")
+            ->get($columns);
+        $this->resetModel();
+
+        return $this->parserResult($model);
+    }
+
     /**
      * Populates the contact_id in tokens tables
      * and soft deletes the record

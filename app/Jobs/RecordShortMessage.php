@@ -19,6 +19,7 @@ class RecordShortMessage extends Job implements ShouldQueue
     private $message;
 
     private $direction;
+
     /**
      * RecordShortMessage constructor.
      * @param $from

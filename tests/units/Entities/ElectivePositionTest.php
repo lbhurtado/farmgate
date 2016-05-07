@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\Repositories\ElectivePositionRepository;
+use App\Repositories\TownRepository;
 use App\Entities\ElectivePosition;
 
 class ElectivePositionTest extends TestCase
@@ -32,9 +33,6 @@ class ElectivePositionTest extends TestCase
         $this->artisan('db:seed');
         $this->seeInDatabase('elective_positions', ['name' => "President",                    'tag' => 1]);
         $this->seeInDatabase('elective_positions', ['name' => 'Vice-President',               'tag' => 2]);
-        $this->seeInDatabase('elective_positions', ['name' => 'Governor of Cavite',           'tag' => 3]);
-        $this->seeInDatabase('elective_positions', ['name' => 'Vice-Governor of Cavite',      'tag' => 4]);
-        $this->seeInDatabase('elective_positions', ['name' => 'Congressman of Tagaytay City', 'tag' => 5]);
         $this->seeInDatabase('elective_positions', ['name' => 'Mayor of Alfonso',             'tag' => 6]);
         $this->seeInDatabase('elective_positions', ['name' => 'Vice-Mayor of Alfonso',        'tag' => 7]);
         $this->seeInDatabase('elective_positions', ['name' => 'Mayor of Amadeo',              'tag' => 6]);

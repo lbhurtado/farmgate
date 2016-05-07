@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'driver' => 'telerivet',
+    'driver' => env('DEFAULT_SMS_DRIVER', 'log'),
     'from' => 'Your Number or Email',
     'telerivet' => [
         'api_key'    => env('TELERIVET_API_KEY'),
@@ -11,6 +11,12 @@ return [
         'token'   => env('SMARTSUITE_TOKEN'),
         'wsdl'    => 'https://ws.smartmessaging.com.ph/soap/?wsdl',
         'service' => 'SENDSMS',
+    ],
+    'sun' => [
+        'user' => env('SUN_USER'),
+        'pass' => env('SUN_PASS'),
+        'mask' => env('SUN_MASK'),
+        'login_url' => 'http://mcpro.sun-solutions.ph/emcpro/login.aspx'
     ],
     'callfire' => [
         'app_login' => 'Your CallFire API Login',
