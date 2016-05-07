@@ -7,6 +7,7 @@ use App\Repositories\ShortMessageRepository;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use SimpleSoftwareIO\SMS\Facades\SMS;
+use App\Mobile;
 
 class ContactAboutClusterMembershipProcessing
 {
@@ -29,14 +30,13 @@ class ContactAboutClusterMembershipProcessing
     public function handle(ClusterMembershipsWereProcessed $event)
     {
         $cluster = $event->cluster;
-
-        $mobile = $cluster->contacts->mobile;
+        $mobile = Mobile::national($cluster->contacts->mobile);
         $handle = $cluster->contacts->handle;
 
         $message  = ($handle != $mobile) ? "$handle:" : "";
         $message .= "\n" . "Go to " . strtok($cluster->polling_place->name, ",");
         $message .= "\n" . "Precinct: " . $cluster->precincts;
-        $message .= "\n" . "Send: TXTCMDR POLL <CANDIDATE> <VOTES> <CANDIDATE> <VOTES>...";
+        $message .= "\n" . "Send: POLL <CANDIDATE> <VOTES> <CANDIDATE> <VOTES>...";
         $message .= "\n" . "To: (0947) 524-3435, (0939) 418-2957, (0917) 825-1991";
 
         SMS::queue($message, [], function($sms) use ($mobile, $message) {

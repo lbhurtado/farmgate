@@ -19,6 +19,13 @@ class Mobile
 
     public static function number($number)
     {
-        return(new static($number))->number;
+        return (new static($number))->number;
+    }
+
+    public static function national($number)
+    {
+        $number = (new static($number))->number;
+
+        return phone_format($number, 'PH', PhoneNumberFormat::NATIONAL);
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Events\PollResultsWereProcessed;
 use SimpleSoftwareIO\SMS\Facades\SMS;
+use App\Mobile;
 
 class ContactAboutPollResultsProcessing
 {
@@ -34,6 +35,7 @@ class ContactAboutPollResultsProcessing
         $handle = $event->instruction->getShortMessage()->contact->handle;
 
         $message  = ($handle != $mobile) ? "$handle:" : "";
+        $mobile   = Mobile::national($mobile);
         $message .= "\n" . "Processed:";
         $message .= "\n" .  $poll_result;
         SMS::queue($message, [], function($sms) use ($mobile, $message) {
