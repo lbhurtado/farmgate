@@ -1,7 +1,11 @@
 <?php
 
 return [
+<<<<<<< Updated upstream
     'driver' => env('DEFAULT_SMS_DRIVER', 'log'),
+=======
+    'driver' => env('DEFAULT_SMS_DRIVER', 'log'), 
+>>>>>>> Stashed changes
     'from' => 'Your Number or Email',
     'telerivet' => [
         'api_key'    => env('TELERIVET_API_KEY'),
