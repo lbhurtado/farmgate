@@ -39,6 +39,6 @@ class SMSController extends Controller
             $sms->to($mobile);
         });
 
-        return Request::all();
+        return $this->request->all();
     }
 }
