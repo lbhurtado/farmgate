@@ -31,6 +31,7 @@ class ContactAboutClusterMembershipProcessing
     {
         $cluster = $event->cluster;
         $mobile = Mobile::national($cluster->contacts->mobile);
+
         $handle = $cluster->contacts->handle;
 
         $message  = ($handle != $mobile) ? "$handle:" : "";

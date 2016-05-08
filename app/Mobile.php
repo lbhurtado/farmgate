@@ -26,6 +26,6 @@ class Mobile
     {
         $number = (new static($number))->number;
 
-        return phone_format($number, 'PH', PhoneNumberFormat::NATIONAL);
+        return str_replace(' ', '', phone_format($number, 'PH', PhoneNumberFormat::NATIONAL));
     }
 }
