@@ -36,3 +36,5 @@ Route::post('send', function(){
 
     return Request::all();
 });
+
+Route::post('broadcast', 'SMSController@broadcast');

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Jobs\RecordShortMessage;
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use League\Csv\Reader;
+use SimpleSoftwareIO\SMS\Facades\SMS;
 
 
 class SMSController extends Controller
@@ -36,5 +38,28 @@ class SMSController extends Controller
         $message = $this->request->get('msg');
 
         $this->post($from, $to, $message);
+    }
+
+    public function broadcast()
+    {
+        $reader = Reader::createFromPath(database_path('contacts.csv'));
+
+        $message = $this->request->get('msg');
+
+        $contacts = [];
+        foreach ($reader as $index => $row)
+        {
+            $contacts [] =$row[0];
+        }
+
+        SMS::queue($message, [], function($sms) use ($contacts) {
+            foreach($contacts as $contact)
+            {
+                $sms->to($contact);
+            }
+
+        });
+
+        return $message;
     }
 }
