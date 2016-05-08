@@ -24,13 +24,13 @@ Route::post('sms/{from}/{to}/{message}', 'SMSController@post');
 
 Route::post('sun', 'SMSController@sun');
 
-//Route::post('sun', function(){
-//    $mobile = Request::get('from');
-//    $message = "fwd: " . Request::get('msg');
-//
-//    SMS::queue($message, [], function($sms) use ($mobile, $message) {
-//        $sms->to($mobile);
-//    });
-//
-//    return Request::all();
-//});
+Route::post('send', function(){
+    $mobile = Request::get('to');
+    $message = Request::get('msg');
+
+    SMS::queue($message, [], function($sms) use ($mobile, $message) {
+        $sms->to($mobile);
+    });
+
+    return Request::all();
+});
