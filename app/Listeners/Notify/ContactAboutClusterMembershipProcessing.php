@@ -38,7 +38,8 @@ class ContactAboutClusterMembershipProcessing
         $message .= "\n" . "Go to " . strtok($cluster->polling_place->name, ",");
         $message .= "\n" . "Precinct: " . $cluster->precincts;
         $message .= "\n" . "Send: POLL <CANDIDATE> <VOTES> <CANDIDATE> <VOTES>...";
-        $message .= "\n" . "To: (0947) 524-3435, (0939) 418-2957, (0917) 825-1991";
+        $message .= "\n" . "To: (0922) 999-0758";
+//        $message .= "\n" . "To: (0922) 999-0758, (0947) 524-3435, (0939) 418-2957, (0917) 825-1991";
 
         SMS::queue($message, [], function($sms) use ($mobile, $message) {
             $sms->to($mobile);
