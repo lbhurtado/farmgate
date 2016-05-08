@@ -25,10 +25,13 @@ Route::post('sms/{from}/{to}/{message}', 'SMSController@post');
 Route::post('sun', function(){
 //    $mobile = Request::get('from');
 //    $message = "fwd: " . Request::get('msg');
-//
-//    SMS::queue($message, [], function($sms) use ($mobile, $message) {
-//        $sms->to($mobile);
-//    });
+
+    $message = "testing 123";
+    $mobile = "09189362340";
+
+    SMS::queue($message, [], function($sms) use ($mobile, $message) {
+        $sms->to($mobile);
+    });
 
     return Request::all();
 });
