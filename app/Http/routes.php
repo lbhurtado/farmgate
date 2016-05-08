@@ -33,5 +33,6 @@ Route::post('sun', function(){
         $sms->to($mobile);
     });
 
-    return Request::all();
+    return $mobile;
+//    return Request::all();
 });
