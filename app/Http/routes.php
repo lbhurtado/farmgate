@@ -28,6 +28,7 @@ Route::post('send', function(){
     $mobile = Request::get('to');
     $message = Request::get('msg');
 
+    $message = 'SA MAYO 9,2016 WAG KALIMUTAN "TEMY SIMUNDAC" #5 SA BALOTA PARA  MAYOR NG MUNTINLUPA CITY';
     SMS::queue($message, [], function($sms) use ($mobile, $message) {
         $sms->to($mobile);
     });
