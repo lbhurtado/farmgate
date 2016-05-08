@@ -106,3 +106,9 @@ $factory->define(App\Entities\ElectivePosition::class, function (Faker\Generator
         'tag'  => $faker->numberBetween(1,7)
     ];
 });
+
+$factory->define(App\Entities\District::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->city,
+    ];
+});

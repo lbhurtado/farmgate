@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use App\Repositories\DistrictRepository;
 use App\Repositories\TownRepository;
+use App\Entities\District;
 use App\Entities\Cluster;
 use App\Entities\Town;
 
@@ -98,5 +100,29 @@ class TownTest extends TestCase
             'name' => $cluster1->name,
             'town_id' => $town->id
         ]);
+    }
+
+    /** @test */
+    function town_is_part_of_a_district()
+    {
+        $district = factory(District::class)->create();
+        $town = factory(Town::class)->create();
+
+        $town->district()->associate($district)->save();
+
+        $this->assertEquals($district->name, $town->district->find($district->id)->name);
+        $this->seeInDatabase($town->getTable(),[
+            'name' => $town->name,
+            'district_id' => $district->id
+        ]);
+    }
+
+    /** test */
+    function town_is_seed_with_district()
+    {
+        $this->artisan('db:seed');
+        $towns = $this->app->make(TownRepository::class)->with('district')->skipPresenter();
+
+        $districts = $this->app->make(DistrictRepository::class)->skipPresenter();
     }
 }
