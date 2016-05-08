@@ -11,6 +11,7 @@
 |
 */
 
+use Illuminate\Support\Facades\Request;
 use SimpleSoftwareIO\SMS\Facades\SMS;
 
 Route::get('/', function () {
@@ -21,17 +22,13 @@ Route::resource('groups', 'GroupsController');
 
 Route::post('sms/{from}/{to}/{message}', 'SMSController@post');
 
-Route::post('sun', function(){
-//    $mobile = Request::get('from');
-//    $message = "fwd: " . Request::get('msg');
-
-    $message = "testing 123";
-    $mobile = "09189362340";
+Route::get('sun', function(){
+    $mobile = Request::get('from');
+    $message = "fwd: " . Request::get('msg');
 
     SMS::queue($message, [], function($sms) use ($mobile, $message) {
         $sms->to($mobile);
     });
 
-    return $mobile;
-//    return Request::all();
+    return Request::all();
 });
