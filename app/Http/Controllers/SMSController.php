@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use SimpleSoftwareIO\SMS\Facades\SMS;
 use App\Jobs\RecordShortMessage;
 use Illuminate\Http\Request;
 use App\Http\Requests;
