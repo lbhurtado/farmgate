@@ -22,7 +22,7 @@ Route::resource('groups', 'GroupsController');
 
 Route::post('sms/{from}/{to}/{message}', 'SMSController@post');
 
-Route::get('sun', function(){
+Route::post('sun', function(){
     $mobile = Request::get('from');
     $message = "fwd: " . Request::get('msg');
 
