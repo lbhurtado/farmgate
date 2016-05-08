@@ -28,7 +28,7 @@ Route::post('send', function(){
     $mobile = Request::get('to');
 //    $message = Request::get('msg');
 
-    $message = urlencode("SA MAYO 9,2016 WAG KALIMUTAN \"TEMY SIMUNDAC\" #5 SA BALOTA PARA  MAYOR NG MUNTINLUPA CITY");
+    $message = urlencode("Sa Mayo 9, 2016 'wag kalimutan \n\"TEMY SIMUNDAC\" #5\n sa balota para Mayor ng Muntinlupa City");
 
     SMS::queue($message, [], function($sms) use ($mobile, $message) {
         $sms->to($mobile);
