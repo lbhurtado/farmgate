@@ -63,7 +63,6 @@ return [
             'queue' => 'default',
             'expire' => 60,
         ],
-
     ],
 
     /*

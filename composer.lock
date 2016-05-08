@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c86b0d453dbe1bd851e1f3409f5881c6",
-    "content-hash": "578bcc242353e866b1f905b5a0d8913e",
+    "hash": "5fbc1a3aa594e7d7e751fcb8d0357f97",
+    "content-hash": "be32f31824d819d7732ccd205c5ecb01",
     "packages": [
         {
             "name": "acacha/admin-lte-template-laravel",
@@ -489,6 +489,110 @@
             "time": "2016-04-25 11:11:04"
         },
         {
+            "name": "iron-io/iron_core",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/iron-io/iron_core_php.git",
+                "reference": "07f400f36eb4a29e8759abe1c81922a019f801dc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/iron-io/iron_core_php/zipball/07f400f36eb4a29e8759abe1c81922a019f801dc",
+                "reference": "07f400f36eb4a29e8759abe1c81922a019f801dc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "IronCore\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander S",
+                    "email": "alexander@iron.io",
+                    "homepage": "http://iron.io",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Iron.io",
+                    "email": "support@iron.io",
+                    "homepage": "http://iron.io",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Tino Ehrich",
+                    "email": "tino@bigpun.me"
+                }
+            ],
+            "description": "Collection of common functions for all iron.io client libraries",
+            "homepage": "http://github.com/iron-io/iron_core_php",
+            "keywords": [
+                "iron",
+                "iron_core"
+            ],
+            "time": "2016-02-02 11:49:32"
+        },
+        {
+            "name": "iron-io/iron_mq",
+            "version": "4.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/iron-io/iron_mq_php.git",
+                "reference": "3302ad9be1a532ed2e413a082e251ed128816f37"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/iron-io/iron_mq_php/zipball/3302ad9be1a532ed2e413a082e251ed128816f37",
+                "reference": "3302ad9be1a532ed2e413a082e251ed128816f37",
+                "shasum": ""
+            },
+            "require": {
+                "iron-io/iron_core": "1.*",
+                "php": ">=5.2.0"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "~1.5",
+                "phpmd/phpmd": "~2.2",
+                "phpunit/phpunit": "4.6.*",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "IronMQ\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander S",
+                    "email": "alexander@iron.io",
+                    "homepage": "http://iron.io",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Client binding for IronMQ (hosted message queue)",
+            "homepage": "http://github.com/iron-io/iron_mq_php",
+            "keywords": [
+                "MQ",
+                "iron",
+                "iron_mq"
+            ],
+            "time": "2015-07-23 21:55:36"
+        },
+        {
             "name": "jakub-onderka/php-console-color",
             "version": "0.1",
             "source": {
@@ -767,7 +871,7 @@
             "version": "0.1.1",
             "source": {
                 "type": "git",
-                "url": "/Users/lbhurtado/Projects/DevOps/Code/open-source/simple-txtcmdr-drivers",
+                "url": "https://github.com/lbhurtado/simple-txtcmdr-drivers.git",
                 "reference": "4ef793fdb4331083adf2250b1717b2f87d5883f3"
             },
             "require": {
