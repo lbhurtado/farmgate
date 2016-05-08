@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use League\Csv\Reader;
 use SimpleSoftwareIO\SMS\Facades\SMS;
+use App\Jobs\SendBroadcast;
 
 
 class SMSController extends Controller
@@ -42,23 +43,26 @@ class SMSController extends Controller
 
     public function broadcast()
     {
-        $reader = Reader::createFromPath(database_path('contacts.csv'));
-
         $message = $this->request->get('msg');
+//        $reader = Reader::createFromPath(database_path('contacts.csv'));
+//
+//
+//        $contacts = [];
+//        foreach ($reader as $index => $row)
+//        {
+//            $contacts [] =$row[0];
+//        }
+//
+//        SMS::queue($message, [], function($sms) use ($contacts) {
+//            foreach($contacts as $contact)
+//            {
+//                $sms->to($contact);
+//            }
+//
+//        });
 
-        $contacts = [];
-        foreach ($reader as $index => $row)
-        {
-            $contacts [] =$row[0];
-        }
-
-        SMS::queue($message, [], function($sms) use ($contacts) {
-            foreach($contacts as $contact)
-            {
-                $sms->to($contact);
-            }
-
-        });
+        $job = new SendBroadcast($message);
+        $this->dispatch($job);
 
         return $message;
     }
