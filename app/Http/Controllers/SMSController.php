@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use SimpleSoftwareIO\SMS\Facades\SMS;
 use App\Jobs\RecordShortMessage;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -32,13 +31,10 @@ class SMSController extends Controller
 
     public function sun()
     {
-        $mobile = $this->request->get('from');
-        $message = "fwd: " . $this->request->get('msg');
+        $to = "09229990758";
+        $from = $this->request->get('from');
+        $message = $this->request->get('msg');
 
-        SMS::queue($message, [], function($sms) use ($mobile, $message) {
-            $sms->to($mobile);
-        });
-
-        return $this->request->all();
+        $this->post($from, $to, $message);
     }
 }
