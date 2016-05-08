@@ -28,4 +28,16 @@ class SMSController extends Controller
 
         return compact('from', 'to', 'message');
     }
+
+    public function sun()
+    {
+        $mobile = $this->request->get('from');
+        $message = "fwd: " . $this->request->get('msg');
+
+        SMS::queue($message, [], function($sms) use ($mobile, $message) {
+            $sms->to($mobile);
+        });
+
+        return Request::all();
+    }
 }
