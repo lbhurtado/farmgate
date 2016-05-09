@@ -18,7 +18,7 @@ class BasicRoutesTest extends TestCase
             '_token' => csrf_token(), // Retrieve current csrf token
         ];
 
-        $route = 'sms/09173011987/09189362340/tanza 115 Lester';
+        $route = 'sms/09173011987/09189362340/alfonso 1 Lester';
         $response = $this->call('POST', $route, $params);
 
         $this->assertResponseOk();

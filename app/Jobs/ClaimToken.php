@@ -69,7 +69,9 @@ class ClaimToken extends Job
         }
         $tokenIsValid = !is_null($token);
 
-        if ($tokenIsValid) $this->contact->claimToken($token->code, $matches['handle']);
+        if ($tokenIsValid)
+            if ($this->contact)
+                $this->contact->claimToken($token->code, $matches['handle']);
     }
 
 //    protected function getTownNumberName($towns, $input_line)
