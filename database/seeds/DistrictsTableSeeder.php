@@ -35,7 +35,7 @@ class DistrictsTableSeeder extends Seeder
                 $town_name = $row[0];
                 $district_name = $row[1];
 
-                $town = $this->towns->findByField('name', $town_name)->first();
+                $town = $this->towns->updateOrCreate(['name' => $town_name],['name' => $town_name]);
                 $district = $this->districts->findByField('name', $district_name)->first();
                 if ($district == null)
                 {
