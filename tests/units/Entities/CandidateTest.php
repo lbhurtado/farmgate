@@ -80,5 +80,8 @@ class CandidateTest extends TestCase
         $this->seeInDatabase('candidates', ['name' => "Grace Poe",       'alias' => "POE"]);
         $this->seeInDatabase('candidates', ['name' => "Mar Roxas",       'alias' => "ROXAS"]);
         $this->seeInDatabase('candidates', ['name' => "Miriam Santiago", 'alias' => "SANTIAGO"]);
+        $this->seeInDatabase('candidates', ['name' => "Miriam Santiago", 'alias' => "SANTIAGO"]);
+        $this->seeInDatabase('candidates', ['name' => "Victor Borromeo", 'alias' => "VICBORROMEO"]);
+        $this->seeInDatabase('candidates', ['name' => "Gie Loyola",      'alias' => "GIGILOYOLA"]);
     }
 }

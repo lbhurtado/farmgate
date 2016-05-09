@@ -124,5 +124,6 @@ class TownTest extends TestCase
         $towns = $this->app->make(TownRepository::class)->with('district')->skipPresenter();
 
         $districts = $this->app->make(DistrictRepository::class)->skipPresenter();
+
     }
 }

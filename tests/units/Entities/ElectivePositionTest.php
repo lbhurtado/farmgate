@@ -33,13 +33,13 @@ class ElectivePositionTest extends TestCase
         $this->artisan('db:seed');
         $this->seeInDatabase('elective_positions', ['name' => "President",                    'tag' => 1]);
         $this->seeInDatabase('elective_positions', ['name' => 'Vice-President',               'tag' => 2]);
-        $this->seeInDatabase('elective_positions', ['name' => 'Mayor of Alfonso',             'tag' => 6]);
-        $this->seeInDatabase('elective_positions', ['name' => 'Vice-Mayor of Alfonso',        'tag' => 7]);
-        $this->seeInDatabase('elective_positions', ['name' => 'Mayor of Amadeo',              'tag' => 6]);
-        $this->seeInDatabase('elective_positions', ['name' => 'Vice-Mayor of Amadeo',         'tag' => 7]);
-        $this->seeInDatabase('elective_positions', ['name' => 'Mayor of Bacoor',              'tag' => 6]);
-        $this->seeInDatabase('elective_positions', ['name' => 'Vice-Mayor of Bacoor',         'tag' => 7]);
-        $this->seeInDatabase('elective_positions', ['name' => 'Mayor of Carmona',             'tag' => 6]);
-        $this->seeInDatabase('elective_positions', ['name' => 'Vice-Mayor of Carmona',        'tag' => 7]);
+        $this->seeInDatabase('elective_positions', ['name' => 'Mayor of CAVITE CITY',         'tag' => 6]);
+        $this->seeInDatabase('elective_positions', ['name' => 'Vice-Mayor of CAVITE CITY',    'tag' => 7]);
+        $this->seeInDatabase('elective_positions', ['name' => 'Mayor of AMADEO',              'tag' => 6]);
+        $this->seeInDatabase('elective_positions', ['name' => 'Vice-Mayor of AMADEO',         'tag' => 7]);
+        $this->seeInDatabase('elective_positions', ['name' => 'Mayor of BACOOR',              'tag' => 6]);
+        $this->seeInDatabase('elective_positions', ['name' => 'Vice-Mayor of BACOOR',         'tag' => 7]);
+        $this->seeInDatabase('elective_positions', ['name' => 'Mayor of CARMONA',             'tag' => 6]);
+        $this->seeInDatabase('elective_positions', ['name' => 'Vice-Mayor of CARMONA',        'tag' => 7]);
     }
 }
